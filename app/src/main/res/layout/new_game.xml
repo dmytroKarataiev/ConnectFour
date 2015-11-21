@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".NewGame">
+
+    <android.support.design.widget.AppBarLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar android:id="@+id/toolbar"
+            android:layout_width="match_parent" android:layout_height="0dp"
+            android:background="?attr/colorPrimary" app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <FrameLayout
+
+        android:id="@+id/FrameLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context=".NewGame" tools:showIn="@layout/new_game">
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/tiles"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/main"
+            android:paddingRight="@dimen/main"
+            >
+
+            <TextView
+                android:id="@+id/game"
+                android:layout_marginTop="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/status"
+                android:textColor="@color/black"
+                android:shadowColor="@color/gray"
+                android:textSize="@dimen/text" />
+
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal|center_vertical"
+                android:orientation="vertical">
+
+                <Button
+                    style="@style/Button"
+                    android:id="@+id/newGameScreen"
+                    android:text="@string/vsEasy"/>
+
+                <Button
+                    style="@style/Button"
+                    android:id="@+id/vsRandom"
+                    android:text="@string/vsRandom"/>
+
+                <Button
+                    style="@style/Button"
+                    android:id="@+id/vsPlayer"
+                    android:text="@string/vsPlayer" />
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </FrameLayout>
+
+</android.support.design.widget.CoordinatorLayout>

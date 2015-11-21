@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Connect Four</string>
+    <string name="action_settings">Settings</string>
+    <string name="newGame">New game</string>
+    <string name="nextMove">Next move</string>
+    <string name="toEnd">End</string>
+    <string name="status">Connect Four</string>
+
+    <string name="vsEasy">Easy</string>
+    <string name="vsRandom">Random</string>
+    <string name="vsPlayer">2 players</string>
+
+
+
+</resources>
