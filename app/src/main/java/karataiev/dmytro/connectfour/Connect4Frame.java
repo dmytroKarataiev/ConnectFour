@@ -76,28 +76,15 @@ public class Connect4Frame extends MainActivity {
         }
         else if(redPlayerturn) // if it's the red player's turn, run their move
         {
-            if (redPlayer instanceof MyAgent)
-            {
-                ((MyAgent) redPlayer).move();
-            }
-            else
-            {
-                redPlayer.move();
-            }
+            redPlayer.move();
             alert(yellowPlayer.toString() + " plays next...");
         }
         else // if it's the yellow player's turn, run their move
         {
-            if (yellowPlayer instanceof MyAgent)
-            {
-                ((MyAgent) yellowPlayer).move();
-            }
-            else
-            {
-                yellowPlayer.move();
-            }
+            yellowPlayer.move();
             alert(redPlayer.toString() + " plays next...");
         }
+
         String validateResult = oldBoard.validate(myGame); // check and make sure this is a valid next move for this board
         if(validateResult.length() > 0) // if there was a validation error, show it and cancel the game
         {
