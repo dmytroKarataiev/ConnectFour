@@ -82,7 +82,7 @@ public class Connect4Frame extends MainActivity {
             }
             else
             {
-                ((RandomAgent) redPlayer).move();
+                redPlayer.move();
             }
             alert(yellowPlayer.toString() + " plays next...");
         }
@@ -94,7 +94,7 @@ public class Connect4Frame extends MainActivity {
             }
             else
             {
-                ((RandomAgent) yellowPlayer).move();
+                yellowPlayer.move();
             }
             alert(redPlayer.toString() + " plays next...");
         }

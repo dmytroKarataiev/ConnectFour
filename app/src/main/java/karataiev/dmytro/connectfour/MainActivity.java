@@ -49,9 +49,17 @@ public class MainActivity extends AppCompatActivity {
         {
             yellowPlayer = new RandomAgent(game, false); // moves completely randomly
         }
-        else
+        else if (id == 3)
         {
             yellowPlayer = new PlayerAgent(game, false); // second user controlled player
+        }
+        else if (id == 4)
+        {
+            yellowPlayer = new AdvancedAgent(game, false); // AdvancedPlayer player
+        }
+        else if (id == 5)
+        {
+            yellowPlayer = new BrilliantAgent(game, false); // BrilliantPlayer player
         }
 
         // button to finish the game

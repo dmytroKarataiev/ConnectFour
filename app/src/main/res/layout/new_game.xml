@@ -74,6 +74,16 @@
                     android:id="@+id/vsPlayer"
                     android:text="@string/vsPlayer" />
 
+                <Button
+                    style="@style/Button"
+                    android:id="@+id/vsAdvanced"
+                    android:text="@string/vsAdvanced"/>
+
+                <Button
+                    style="@style/Button"
+                    android:id="@+id/vsHard"
+                    android:text="@string/vsHard" />
+
 
             </LinearLayout>
 

@@ -9,6 +9,8 @@
     <string name="vsEasy">Easy</string>
     <string name="vsRandom">Random</string>
     <string name="vsPlayer">2 players</string>
+    <string name="vsAdvanced">Advanced</string>
+    <string name="vsHard">Hard</string>
 
 
 

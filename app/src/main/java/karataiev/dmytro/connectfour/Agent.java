@@ -94,4 +94,7 @@ public abstract class Agent
         }
         return lowestEmptySlot;
     }
+
+    public abstract void move();
+
 }

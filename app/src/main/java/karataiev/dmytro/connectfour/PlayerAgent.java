@@ -31,6 +31,12 @@ public class PlayerAgent extends Agent
         moveOnColumn(move);
     }
 
+
+    public void move()
+    {
+
+    };
+
     /**
      * Returns the name of this agent.
      *

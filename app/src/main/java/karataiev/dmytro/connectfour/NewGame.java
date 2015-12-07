@@ -12,7 +12,7 @@ import android.widget.Button;
 
 public class NewGame extends AppCompatActivity {
 
-    Button newGame, vsRandom, vsPlayer;
+    Button newGame, vsRandom, vsPlayer, vsHard, vsAdvanced;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +61,34 @@ public class NewGame extends AppCompatActivity {
 
                 Intent intent = new Intent(context, MainActivity.class);
                 intent.putExtra("player", 3);
+                startActivity(intent);
+
+            }
+
+        });
+
+        vsRandom = (Button) findViewById(R.id.vsAdvanced);
+        vsRandom.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+
+                Intent intent = new Intent(context, MainActivity.class);
+                intent.putExtra("player", 4);
+                startActivity(intent);
+
+            }
+
+        });
+
+        vsRandom = (Button) findViewById(R.id.vsHard);
+        vsRandom.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+
+                Intent intent = new Intent(context, MainActivity.class);
+                intent.putExtra("player", 5);
                 startActivity(intent);
 
             }
