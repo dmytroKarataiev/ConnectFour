@@ -61,18 +61,13 @@
 
                 <Button
                     style="@style/Button"
-                    android:id="@+id/newGameScreen"
-                    android:text="@string/vsEasy"/>
-
-                <Button
-                    style="@style/Button"
                     android:id="@+id/vsRandom"
                     android:text="@string/vsRandom"/>
 
                 <Button
                     style="@style/Button"
-                    android:id="@+id/vsPlayer"
-                    android:text="@string/vsPlayer" />
+                    android:id="@+id/newGameScreen"
+                    android:text="@string/vsEasy"/>
 
                 <Button
                     style="@style/Button"
@@ -83,6 +78,11 @@
                     style="@style/Button"
                     android:id="@+id/vsHard"
                     android:text="@string/vsHard" />
+
+                <Button
+                    style="@style/Button"
+                    android:id="@+id/vsPlayer"
+                    android:text="@string/vsPlayer" />
 
 
             </LinearLayout>
