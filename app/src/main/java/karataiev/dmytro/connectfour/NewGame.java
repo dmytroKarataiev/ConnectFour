@@ -111,8 +111,8 @@ public class NewGame extends AppCompatActivity implements
 
         });
 
-        vsRandom = (Button) findViewById(R.id.vsAdvanced);
-        vsRandom.setOnClickListener(new View.OnClickListener() {
+        vsAdvanced = (Button) findViewById(R.id.vsAdvanced);
+        vsAdvanced.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View arg0) {
@@ -125,8 +125,8 @@ public class NewGame extends AppCompatActivity implements
 
         });
 
-        vsRandom = (Button) findViewById(R.id.vsHard);
-        vsRandom.setOnClickListener(new View.OnClickListener() {
+        vsHard = (Button) findViewById(R.id.vsHard);
+        vsHard.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View arg0) {
