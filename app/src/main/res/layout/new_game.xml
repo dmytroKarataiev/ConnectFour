@@ -64,28 +64,33 @@
 
                 <Button
                     android:id="@+id/vsRandom"
-                    style="@style/Button"
+                    style="@style/ButtonConnectFour"
                     android:text="@string/vsRandom" />
 
                 <Button
                     android:id="@+id/newGameScreen"
-                    style="@style/Button"
+                    style="@style/ButtonConnectFour"
                     android:text="@string/vsEasy" />
 
                 <Button
                     android:id="@+id/vsAdvanced"
-                    style="@style/Button"
+                    style="@style/ButtonConnectFour"
                     android:text="@string/vsAdvanced" />
 
                 <Button
                     android:id="@+id/vsHard"
-                    style="@style/Button"
+                    style="@style/ButtonConnectFour"
                     android:text="@string/vsHard" />
 
                 <Button
                     android:id="@+id/vsPlayer"
-                    style="@style/Button"
+                    style="@style/ButtonConnectFour"
                     android:text="@string/vsPlayer" />
+
+                <Button
+                    android:id="@+id/skeleton"
+                    style="@style/ButtonConnectFour"
+                    android:text="skeleton" />
 
                 <TextView
                     android:id="@+id/status"

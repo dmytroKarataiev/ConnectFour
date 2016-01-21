@@ -46,7 +46,7 @@
             <Button
                 android:id="@+id/end"
                 android:text="@string/toEnd"
-                style="@style/Button"/>
+                style="@style/ButtonConnectFour"/>
 
         </LinearLayout>
 

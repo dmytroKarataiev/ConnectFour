@@ -72,6 +72,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+
     // starts the game on focus (to be able to get dimensions of the imageview
     @Override
     public void onWindowFocusChanged(boolean hasFocus){
@@ -134,13 +136,17 @@ public class MainActivity extends AppCompatActivity {
                 int move = (int) initialX / (width / 7);
 
                 if (mainframe.gameActive) {
-                    if (mainframe.redPlayerturn && redPlayer instanceof PlayerAgent && ((PlayerAgent) redPlayer).getLowestEmptyIndex(game.getColumn(move)) > -1) {
+                    if (mainframe.redPlayerturn && redPlayer instanceof PlayerAgent && ((PlayerAgent) redPlayer)
+                            .getLowestEmptyIndex(game.getColumn(move)) > -1) {
+
                         mainframe.nextMoveButtonPressed(move);
                         if (mainframe.gameActive && !(yellowPlayer instanceof PlayerAgent)) {
                             mainframe.nextMoveButtonPressed(-1);
                         }
                     }
-                    else if (!mainframe.redPlayerturn && yellowPlayer instanceof PlayerAgent && ((PlayerAgent) yellowPlayer).getLowestEmptyIndex(game.getColumn(move)) > -1) {
+                    else if (!mainframe.redPlayerturn && yellowPlayer instanceof PlayerAgent && ((PlayerAgent) yellowPlayer)
+                            .getLowestEmptyIndex(game.getColumn(move)) > -1) {
+
                         mainframe.nextMoveButtonPressed(move);
                         if (mainframe.gameActive && !(redPlayer instanceof PlayerAgent)) {
                             mainframe.nextMoveButtonPressed(-1);
