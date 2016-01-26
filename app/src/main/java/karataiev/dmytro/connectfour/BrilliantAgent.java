@@ -39,17 +39,17 @@ public class BrilliantAgent extends Agent {
         return var1;
     }
 
-    public void moveOnColumn(int var1) {
-        Connect4Slot var2 = this.getTopEmptySlot(this.myGame.getColumn(var1));
-        if(var2 != null) {
-            if(this.iAmRed) {
-                var2.addRed();
-            } else {
-                var2.addYellow();
-            }
-        }
-
-    }
+//    public void moveOnColumn(int var1) {
+//        Connect4Slot var2 = this.getTopEmptySlot(this.myGame.getColumn(var1));
+//        if(var2 != null) {
+//            if(this.iAmRed) {
+//                var2.addRed();
+//            } else {
+//                var2.addYellow();
+//            }
+//        }
+//
+//    }
 
     public Connect4Slot getTopEmptySlot(Connect4Column var1) {
         int var2 = -1;

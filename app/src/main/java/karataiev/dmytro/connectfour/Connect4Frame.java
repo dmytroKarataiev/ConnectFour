@@ -1,7 +1,9 @@
 package karataiev.dmytro.connectfour;
 
 import android.app.Activity;
+import android.util.Log;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.Random;
@@ -10,6 +12,8 @@ import java.util.Random;
  * The main driver of the Connect4Game
  */
 public class Connect4Frame extends MainActivity {
+
+    private final String LOG_TAG = Connect4Frame.class.getSimpleName();
 
     Connect4Game myGame;    // the game itself
     Connect4Panel myPanel; // the panel (draw & paint)
@@ -20,6 +24,9 @@ public class Connect4Frame extends MainActivity {
     TextView status;
     Activity current;
     Random r;   // a random number generator to randomly decide who plays first
+
+    // Images glow on move
+    ImageView yellowPlayerImage, redPlayerImage;
 
     /**
      * Creates a new Connect4Frame with a given game and pair of players.
@@ -39,9 +46,13 @@ public class Connect4Frame extends MainActivity {
 
         this.current = current;
 
-        this.playToEndButton = (Button) current.findViewById(R.id.end);
+        playToEndButton = (Button) current.findViewById(R.id.end);
 
-        this.status = (TextView) current.findViewById(R.id.status);
+        status = (TextView) current.findViewById(R.id.status);
+
+        // Colorful balls
+        yellowPlayerImage = (ImageView) current.findViewById(R.id.image_player_left);
+        redPlayerImage = (ImageView) current.findViewById(R.id.image_player_right);
 
         myPanel = new Connect4Panel(game, current);  // creates the panel for displaying the game
     }
@@ -64,6 +75,9 @@ public class Connect4Frame extends MainActivity {
     private void nextMove(int move)
     {
         Connect4Game oldBoard = new Connect4Game(myGame);   // store the old board for validation
+
+        colorPlayerBall(redPlayerturn);
+
         if (redPlayerturn && redPlayer instanceof PlayerAgent)
         {
             alert(yellowPlayer.toString() + " plays next...");
@@ -123,6 +137,7 @@ public class Connect4Frame extends MainActivity {
         myGame.clearBoard();
         gameActive = true;
         redPlayerturn = r.nextBoolean();
+
         if (redPlayerturn)
         {
             alert(redPlayer.toString() + " plays first!");
@@ -133,6 +148,9 @@ public class Connect4Frame extends MainActivity {
             alert(yellowPlayer.toString() + " plays first!");
             myGame.setRedPlayedFirst(false);
         }
+
+        colorPlayerBall(!redPlayerturn);
+
         myPanel.paint();
 
         if (gameActive && (!(redPlayer instanceof PlayerAgent) && redPlayerturn ||
@@ -156,6 +174,22 @@ public class Connect4Frame extends MainActivity {
     public void nextMoveButtonPressed(int move)
     {
         nextMove(move);
+    }
+
+    /**
+     * Method to color payer ball in correct color
+     */
+    private void colorPlayerBall(Boolean firstMove) {
+        // Glow on turn
+        Log.v(LOG_TAG, "redBool: " + firstMove);
+
+        if (firstMove) {
+            redPlayerImage.setImageResource(R.drawable.red);
+            yellowPlayerImage.setImageResource(R.drawable.yellow_glow);
+        } else {
+            redPlayerImage.setImageResource(R.drawable.red_glow);
+            yellowPlayerImage.setImageResource(R.drawable.yellow);
+        }
     }
 
 }

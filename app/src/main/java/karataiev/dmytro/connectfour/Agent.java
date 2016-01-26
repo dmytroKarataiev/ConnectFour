@@ -66,6 +66,10 @@ public abstract class Agent
         if (lowestEmptySlotIndex > -1)  // if the column is not full
         {
             Connect4Slot lowestEmptySlot = myGame.getColumn(columnNumber).getSlot(lowestEmptySlotIndex);  // get the slot in this column at this index
+
+            myGame.clearEachColumn();
+            lowestEmptySlot.addLastFilled();
+
             if (iAmRed) // If the current agent is the Red player...
             {
                 lowestEmptySlot.addRed(); // Place a red token into the empty slot

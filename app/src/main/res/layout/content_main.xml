@@ -1,60 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/FrameLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:adjustViewBounds="true"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:showIn="@layout/activity_main" tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    tools:showIn="@layout/activity_main">
 
     <ImageView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:src="@drawable/tiles"
         android:scaleType="centerCrop"
-        />
+        android:src="@drawable/tiles" />
 
     <LinearLayout
-        android:orientation="vertical"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        android:paddingBottom="@dimen/activity_vertical_margin"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        >
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingTop="@dimen/activity_vertical_margin">
 
         <TextView
             android:id="@+id/status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:text="@string/status"
             android:textColor="@color/black"
-            android:textSize="@dimen/textGame"
-            android:layout_gravity="center_horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:textSize="@dimen/textGame" />
 
         <LinearLayout
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin">
 
 
             <Button
                 android:id="@+id/end"
-                android:text="@string/toEnd"
-                style="@style/ButtonConnectFour"/>
+                style="@style/ButtonConnectFour"
+                android:text="@string/toEnd" />
 
         </LinearLayout>
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/activity_horizontal_margin">
+
+            <ImageView
+                android:id="@+id/image_player_left"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentLeft="true"
+                android:src="@drawable/yellow" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_toRightOf="@id/image_player_left"
+                android:padding="@dimen/activity_horizontal_margin"
+                android:text="Player 1"
+                android:textAppearance="?android:textAppearanceLarge"
+                android:textColor="@color/white" />
+
+            <ImageView
+                android:id="@+id/image_player_right"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/red" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_toLeftOf="@id/image_player_right"
+                android:padding="@dimen/activity_horizontal_margin"
+                android:text="Player 2"
+                android:textAppearance="?android:textAppearanceLarge"
+                android:textColor="@color/white" />
+
+
+        </RelativeLayout>
+
         <ImageView
-            android:layout_gravity="end"
             android:id="@+id/gameField"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_gravity="end"
             android:adjustViewBounds="true" />
 
     </LinearLayout>

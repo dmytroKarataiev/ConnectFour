@@ -99,4 +99,15 @@ public class Connect4Column
     	
     	return empty;
     }
+
+    /**
+     * Method to set false for each slot's isLastFilled variable,
+     * so it won't be highlighted on draw
+     */
+    public void clearLastMove() {
+        for (Connect4Slot slot : slots)
+        {
+            slot.setLastFilled();
+        }
+    }
 }

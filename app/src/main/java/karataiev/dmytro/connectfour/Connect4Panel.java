@@ -13,8 +13,7 @@ import android.widget.ImageView;
  * The panel for displaying the current status of the game itself.
  */
 
-public class Connect4Panel extends AppCompatActivity
-{
+public class Connect4Panel extends AppCompatActivity {
     private Connect4Game myGame;    // the game to display
     private int slotRadius;  // size of the individual slots (radius)
     private int slotSpacing; // space between slots
@@ -28,8 +27,7 @@ public class Connect4Panel extends AppCompatActivity
      *
      * @param game the game to display.
      */
-    public Connect4Panel(Connect4Game game, Activity current)
-    {
+    public Connect4Panel(Connect4Game game, Activity current) {
         this.myGame = game;
         this.slotRadius = 71;
         this.slotSpacing = slotRadius + 5;
@@ -40,8 +38,7 @@ public class Connect4Panel extends AppCompatActivity
     /**
      * Paints the current status of the game.
      */
-    public void paint()
-    {
+    public void paint() {
         int[] dimensions = imageViewSize();
         Paint paint = new Paint();
 
@@ -53,24 +50,17 @@ public class Connect4Panel extends AppCompatActivity
         slotRadius = (int) ((float) (dimensions[0]) / 7 - (float) dimensions[0] / 7 * 0.07) / 2;
         slotSpacing = slotRadius + (int) ((float) dimensions[0] / 7 * 0.07);
 
-        for (int i = 0; i < myGame.getColumnCount(); i++)
-        {
-            for (int j = 0; j < myGame.getRowCount(); j++)
-            {
+        for (int i = 0; i < myGame.getColumnCount(); i++) {
+            for (int j = 0; j < myGame.getRowCount(); j++) {
                 Connect4Column column = myGame.getColumn(i);
                 Connect4Slot currentSlot = column.getSlot(j);
-                if(!currentSlot.getIsFilled())
-                {
+
+                if (!currentSlot.getIsFilled()) {
                     paint.setColor(Color.WHITE);
-                }
-                else
-                {
-                    if (currentSlot.getIsRed())
-                    {
+                } else {
+                    if (currentSlot.getIsRed()) {
                         paint.setColor(Color.RED);
-                    }
-                    else
-                    {
+                    } else {
                         paint.setColor(Color.YELLOW);
                     }
                 }
@@ -79,14 +69,12 @@ public class Connect4Panel extends AppCompatActivity
                 y += dimensions[1] - dimensions[0] + 2 * slotRadius;
 
                 drawSlot(canvas, x, y, slotRadius, paint);
-                if (currentSlot.getIsHighlighted())
-                {
-                    if (currentSlot.getIsRed())
-                    {
+
+                // highlight if it is in winning line or if it was filled last
+                if (currentSlot.getIsHighlighted() || currentSlot.getLastFilled()) {
+                    if (currentSlot.getIsRed()) {
                         paint.setColor(Color.RED);
-                    }
-                    else
-                    {
+                    } else {
                         paint.setColor(Color.YELLOW);
                     }
                     drawHighlight(canvas, x, y, slotRadius, paint);
@@ -100,26 +88,24 @@ public class Connect4Panel extends AppCompatActivity
      * Draw a single slot.
      *
      * @param canvas the canvas to draw on
-     * @param x the center x-coordinate where to draw the slot.
-     * @param y the center y-coordinate where to draw the slot.
-     * @param color the color for the slot.
+     * @param x      the center x-coordinate where to draw the slot.
+     * @param y      the center y-coordinate where to draw the slot.
+     * @param color  the color for the slot.
      */
-    public void drawSlot(Canvas canvas, int x, int y, int slotRadius, Paint color)
-    {
+    public void drawSlot(Canvas canvas, int x, int y, int slotRadius, Paint color) {
         canvas.drawCircle(x, y, slotRadius, color);
     }
 
     /**
      * Highlight a slot.
-     *
      * the graphics object with which to paint.
+     *
      * @param canvas the canvas to draw on
-     * @param x the top-left x-coordinate where to draw the highlight.
-     * @param y the top-left y-coordinate where to draw the highlight.
-     * @param paint color to use
+     * @param x      the top-left x-coordinate where to draw the highlight.
+     * @param y      the top-left y-coordinate where to draw the highlight.
+     * @param paint  color to use
      */
-    public void drawHighlight(Canvas canvas, int x, int y, int slotRadius, Paint paint)
-    {
+    public void drawHighlight(Canvas canvas, int x, int y, int slotRadius, Paint paint) {
         Paint old = new Paint();
         old.setColor(paint.getColor());
 
@@ -133,8 +119,7 @@ public class Connect4Panel extends AppCompatActivity
      *
      * @return dimensions of the current screen
      */
-    public int[] imageViewSize()
-    {
+    public int[] imageViewSize() {
         ImageView iv = (ImageView) current.findViewById(R.id.gameField);
         dimensions = new int[2];
 

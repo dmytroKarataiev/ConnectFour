@@ -2,27 +2,23 @@ package karataiev.dmytro.connectfour;
 
 /**
  * The data structure for a game of Connect 4.
- * 
+ * <p/>
  * Connect4Game is made of a certain number of Connect4Columns. Each column represents
  * a column from the current state of the game.
- * 
  */
-public class Connect4Game
-{
+public class Connect4Game {
     private Connect4Column[] columns;
     private boolean redPlayedFirst;
-    
+
     /**
      * Construct a new Connect 4 game with the given size.
      *
      * @param numCols The number of columns in the game board
      * @param numRows The number of rows in the game board
      */
-    public Connect4Game(int numCols, int numRows)
-    {
-        columns=new Connect4Column[numCols];
-        for(int i = 0; i < numCols; i++)
-        {
+    public Connect4Game(int numCols, int numRows) {
+        columns = new Connect4Column[numCols];
+        for (int i = 0; i < numCols; i++) {
             columns[i] = new Connect4Column(numRows);
         }
     }
@@ -32,40 +28,33 @@ public class Connect4Game
      *
      * @param game The game to copy.
      */
-    public Connect4Game(Connect4Game game)
-    {
+    public Connect4Game(Connect4Game game) {
         columns = new Connect4Column[game.getColumnCount()];
-        for (int i = 0; i < game.getColumnCount(); i++)
-        {
+        for (int i = 0; i < game.getColumnCount(); i++) {
             columns[i] = new Connect4Column(game.getColumn(i));
         }
     }
-    
+
     /**
      * Retrieve a certain Connect4Column from the game board.
      *
      * @param i The column to retrieve.
      * @return the ith Connect4Column if it exists; null otherwise
      */
-    public Connect4Column getColumn(int i)
-    {
-        if (i < columns.length && i >= 0)
-        {
+    public Connect4Column getColumn(int i) {
+        if (i < columns.length && i >= 0) {
             return columns[i];
-        }
-        else
-        {
+        } else {
             return null;
         }
     }
-    
+
     /**
      * Get the total number of columns in the game board.
      *
      * @return the number of columns in the game board.
      */
-    public int getColumnCount()
-    {
+    public int getColumnCount() {
         return columns.length;
     }
 
@@ -74,22 +63,18 @@ public class Connect4Game
      *
      * @return the number of rows in the game board.
      */
-    public int getRowCount()
-    {
+    public int getRowCount() {
         return columns[0].getRowCount();
     }
 
     /**
      * Start a new game.
-     * 
+     * <p/>
      * Your agent will not need to use this method.
      */
-    public void clearBoard()
-    {
-        for (int i = 0; i < getColumnCount(); i++)
-        {
-            for (int j = 0; j < getRowCount(); j++)
-            {
+    public void clearBoard() {
+        for (int i = 0; i < getColumnCount(); i++) {
+            for (int j = 0; j < getRowCount(); j++) {
                 getColumn(i).getSlot(j).clear();
             }
         }
@@ -100,26 +85,17 @@ public class Connect4Game
      *
      * @return a character matrix of the game board.
      */
-    public char[][] getBoardMatrix()
-    {
+    public char[][] getBoardMatrix() {
         char[][] board = new char[getRowCount()][getColumnCount()];
-        for (int i = 0; i < getColumnCount(); i++)
-        {
-            for(int j = 0; j < getRowCount(); j++) 
-            {
-                if (getColumn(i).getSlot(j).getIsFilled())
-                {
-                    if (getColumn(i).getSlot(j).getIsRed())
-                    {
+        for (int i = 0; i < getColumnCount(); i++) {
+            for (int j = 0; j < getRowCount(); j++) {
+                if (getColumn(i).getSlot(j).getIsFilled()) {
+                    if (getColumn(i).getSlot(j).getIsRed()) {
                         board[j][i] = 'R';
-                    }
-                    else
-                    {
+                    } else {
                         board[j][i] = 'Y';
                     }
-                }
-                else
-                {
+                } else {
                     board[j][i] = 'B';
                 }
             }
@@ -132,15 +108,11 @@ public class Connect4Game
      *
      * @return true if the board is full, false otherwise.
      */
-    public boolean boardFull()
-    {
+    public boolean boardFull() {
         char[][] board = getBoardMatrix();
-        for (int i = 0; i < getColumnCount(); i++)
-        {
-            for (int j = 0; j < getRowCount(); j++)
-            {
-                if (board[j][i] == 'B')
-                {
+        for (int i = 0; i < getColumnCount(); i++) {
+            for (int j = 0; j < getRowCount(); j++) {
+                if (board[j][i] == 'B') {
                     return false;
                 }
             }
@@ -153,21 +125,15 @@ public class Connect4Game
      *
      * @return 'R' if red won, 'Y' if yellow won, 'N' if the game has not been won.
      */
-    public char gameWon()
-    {
+    public char gameWon() {
         char[][] board = getBoardMatrix();
-        
-        for (int i = 0; i < getColumnCount(); i++)
-        {
-            for (int j = 0; j < getRowCount(); j++)
-            {
-                if(board[j][i] != 'B')
-                {
-                    if (j + 3 < getRowCount())
-                    {
+
+        for (int i = 0; i < getColumnCount(); i++) {
+            for (int j = 0; j < getRowCount(); j++) {
+                if (board[j][i] != 'B') {
+                    if (j + 3 < getRowCount()) {
                         // vertical
-                    	if(board[j][i] == board[j + 1][i] && board[j][i] == board[j + 2][i] && board[j][i] == board[j + 3][i])
-                        {
+                        if (board[j][i] == board[j + 1][i] && board[j][i] == board[j + 2][i] && board[j][i] == board[j + 3][i]) {
                             highlightSlot(j, i);
                             highlightSlot(j + 1, i);
                             highlightSlot(j + 2, i);
@@ -175,11 +141,9 @@ public class Connect4Game
                             return board[j][i];
                         }
                     }
-                    if (i + 3 < getColumnCount())
-                    {
-                    	// horizontal
-                        if (board[j][i] == board[j][i + 1] && board[j][i] == board[j][i + 2] && board[j][i] == board[j][i + 3])
-                        {
+                    if (i + 3 < getColumnCount()) {
+                        // horizontal
+                        if (board[j][i] == board[j][i + 1] && board[j][i] == board[j][i + 2] && board[j][i] == board[j][i + 3]) {
                             highlightSlot(j, i);
                             highlightSlot(j, i + 1);
                             highlightSlot(j, i + 2);
@@ -187,21 +151,17 @@ public class Connect4Game
                             return board[j][i];
                         }
                     }
-                    if (i + 3 < getColumnCount() && j + 3 < getRowCount())
-                    {
-                        if(board[j][i] == board[j + 1][i + 1] && board[j][i] == board[j + 2][i + 2] && board[j][i] == board[j + 3][i + 3])
-                        {
+                    if (i + 3 < getColumnCount() && j + 3 < getRowCount()) {
+                        if (board[j][i] == board[j + 1][i + 1] && board[j][i] == board[j + 2][i + 2] && board[j][i] == board[j + 3][i + 3]) {
                             highlightSlot(j, i);
                             highlightSlot(j + 1, i + 1);
                             highlightSlot(j + 2, i + 2);
-                            highlightSlot(j + 3,i + 3);
+                            highlightSlot(j + 3, i + 3);
                             return board[j][i];
                         }
                     }
-                    if (i > 2 && j + 3 < getRowCount())
-                    {
-                        if (board[j][i] == board[j + 1][i - 1] && board[j][i] == board[j + 2][i - 2] && board[j][i] == board[j + 3][i - 3])
-                        {
+                    if (i > 2 && j + 3 < getRowCount()) {
+                        if (board[j][i] == board[j + 1][i - 1] && board[j][i] == board[j + 2][i - 2] && board[j][i] == board[j + 3][i - 3]) {
                             highlightSlot(j, i);
                             highlightSlot(j + 1, i - 1);
                             highlightSlot(j + 2, i - 2);
@@ -221,69 +181,47 @@ public class Connect4Game
      *
      * @param after the next board state.
      */
-    public String validate(Connect4Game after)
-    {
+    public String validate(Connect4Game after) {
         int filledSlots = 0, redSlots = 0, yellowSlots = 0;
-        for (int i = 0; i < getColumnCount(); i++)
-        {
-            for (int j = 0; j < getRowCount(); j++)
-            {
-                if (after.getColumn(i).getSlot(j).getIsFilled())
-                {
-                    if (after.getColumn(i).getSlot(j).getIsRed())
-                    {
+        for (int i = 0; i < getColumnCount(); i++) {
+            for (int j = 0; j < getRowCount(); j++) {
+                if (after.getColumn(i).getSlot(j).getIsFilled()) {
+                    if (after.getColumn(i).getSlot(j).getIsRed()) {
                         redSlots++;
-                    }
-                    else
-                    {
+                    } else {
                         yellowSlots++;
                     }
                 }
-                if (!getColumn(i).getSlot(j).getIsFilled() && after.getColumn(i).getSlot(j).getIsFilled())
-                {
+                if (!getColumn(i).getSlot(j).getIsFilled() && after.getColumn(i).getSlot(j).getIsFilled()) {
                     filledSlots++;
                 }
-                if (getColumn(i).getSlot(j).getIsFilled() && !after.getColumn(i).getSlot(j).getIsFilled())
-                {
+                if (getColumn(i).getSlot(j).getIsFilled() && !after.getColumn(i).getSlot(j).getIsFilled()) {
                     return "Invalid move: a token was removed at column " + i + ", row " + j + ".";
                 }
-                if (getColumn(i).getSlot(j).getIsFilled() && (getColumn(i).getSlot(j).getIsRed()!=after.getColumn(i).getSlot(j).getIsRed()))
-                {
+                if (getColumn(i).getSlot(j).getIsFilled() && (getColumn(i).getSlot(j).getIsRed() != after.getColumn(i).getSlot(j).getIsRed())) {
                     return "Invalid move: a token was changed at column " + i + ", row " + j + ".";
                 }
-                if (j < getRowCount() - 1 && after.getColumn(i).getSlot(j).getIsFilled() && !after.getColumn(i).getSlot(j+1).getIsFilled())
-                {
+                if (j < getRowCount() - 1 && after.getColumn(i).getSlot(j).getIsFilled() && !after.getColumn(i).getSlot(j + 1).getIsFilled()) {
                     return "Invalid move: a token in column " + i + " was not placed in the highest open slot.";
                 }
             }
         }
-        if (filledSlots > 1)
-        {
+        if (filledSlots > 1) {
             return "Invalid move: more than one token was placed.";
         }
-        if (filledSlots == 0)
-        {
+        if (filledSlots == 0) {
             return "Invalid move: no move was made.";
         }
-        if (after.getRedPlayedFirst())
-        {
-            if (redSlots < yellowSlots)
-            {
+        if (after.getRedPlayedFirst()) {
+            if (redSlots < yellowSlots) {
                 return "Invalid move: yellow moved during red's turn.";
-            }
-            else if (redSlots > yellowSlots + 1)
-            {
+            } else if (redSlots > yellowSlots + 1) {
                 return "Invalid move: red moved during yellow's turn.";
             }
-        }
-        else
-        {
-            if (yellowSlots < redSlots)
-            {
+        } else {
+            if (yellowSlots < redSlots) {
                 return "Invalid move: red moved during yellow's turn.";
-            }
-            else if (yellowSlots > redSlots + 1)
-            {
+            } else if (yellowSlots > redSlots + 1) {
                 return "Invalid move: yellow moved during red's turn.";
             }
         }
@@ -293,51 +231,54 @@ public class Connect4Game
     /**
      * Highlight the winning moves in a game.
      *
-     * @param row the row of the token to highlight
+     * @param row    the row of the token to highlight
      * @param column the column of the token to highlight
      */
-    public void highlightSlot(int row, int column)
-    {
+    public void highlightSlot(int row, int column) {
         getColumn(column).getSlot(row).highlight();
     }
-    
+
     /**
      * Check whether red played first. This is used to confirm the players are alternating correctly.
      *
      * @return true if red played first in this game, false otherwise.
      */
-    public boolean getRedPlayedFirst()
-    {
+    public boolean getRedPlayedFirst() {
         return redPlayedFirst;
     }
-    
+
     /**
      * Sets whether red played first. This is used to confirm the players are alternating correctly.
      *
      * @param redPlayedFirst true if red played first in this game, false otherwise.
      */
-    public void setRedPlayedFirst(boolean redPlayedFirst)
-    {
+    public void setRedPlayedFirst(boolean redPlayedFirst) {
         this.redPlayedFirst = redPlayedFirst;
     }
-    
+
     /**
      * Returns true if all columns are empty
-     * 
+     *
      * @return boolean true if columns are empty, false otherwise
      */
-    public boolean isEmpty()
-    {
-    	boolean empty = true;
-    	
-    	for (Connect4Column each : columns)
-    	{
-    		if (!each.isEmpty())
-    		{
-    			empty = false;
-    		}
-    	}
-    	
-    	return empty;
+    public boolean isEmpty() {
+        boolean empty = true;
+
+        for (Connect4Column each : columns) {
+            if (!each.isEmpty()) {
+                empty = false;
+            }
+        }
+
+        return empty;
+    }
+
+    /**
+     * Clear each column / slot from being lastFilled (stop highlighting)
+     */
+    public void clearEachColumn() {
+        for (Connect4Column each : columns) {
+            each.clearLastMove();
+        }
     }
 }
