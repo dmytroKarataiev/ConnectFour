@@ -1,5 +1,7 @@
-package karataiev.dmytro.connectfour;
+package karataiev.dmytro.connectfour.players;
 import java.util.Random;
+
+import karataiev.dmytro.connectfour.Connect4Game;
 
 /**
  *  Simple computer algorithm which tries to prevent you from winning and checks 1 move ahead if you or he can win

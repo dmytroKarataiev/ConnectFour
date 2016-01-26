@@ -8,6 +8,9 @@ import android.widget.TextView;
 
 import java.util.Random;
 
+import karataiev.dmytro.connectfour.players.Agent;
+import karataiev.dmytro.connectfour.players.PlayerAgent;
+
 /**
  * The main driver of the Connect4Game
  */
@@ -27,6 +30,7 @@ public class Connect4Frame extends MainActivity {
 
     // Images glow on move
     ImageView yellowPlayerImage, redPlayerImage;
+    TextView yellowPlayerName, redPlayerName;
 
     /**
      * Creates a new Connect4Frame with a given game and pair of players.
@@ -53,6 +57,12 @@ public class Connect4Frame extends MainActivity {
         // Colorful balls
         yellowPlayerImage = (ImageView) current.findViewById(R.id.image_player_left);
         redPlayerImage = (ImageView) current.findViewById(R.id.image_player_right);
+
+        // Player names
+        yellowPlayerName = (TextView) current.findViewById(R.id.text_player_left);
+        redPlayerName = (TextView) current.findViewById(R.id.text_player_right);
+        yellowPlayerName.setText(yellowPlayer.getName());
+        redPlayerName.setText(redPlayer.getName());
 
         myPanel = new Connect4Panel(game, current);  // creates the panel for displaying the game
     }

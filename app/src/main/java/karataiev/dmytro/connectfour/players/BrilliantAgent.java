@@ -1,4 +1,4 @@
-package karataiev.dmytro.connectfour;
+package karataiev.dmytro.connectfour.players;
 
 //
 // Source code recreated from a .class file by IntelliJ IDEA
@@ -6,6 +6,10 @@ package karataiev.dmytro.connectfour;
 //
 
 import java.util.Random;
+
+import karataiev.dmytro.connectfour.Connect4Column;
+import karataiev.dmytro.connectfour.Connect4Game;
+import karataiev.dmytro.connectfour.Connect4Slot;
 
 public class BrilliantAgent extends Agent {
     Random r = new Random();
@@ -145,6 +149,6 @@ public class BrilliantAgent extends Agent {
     }
 
     public String getName() {
-        return "Brilliant Agent";
+        return "Brilliant";
     }
 }

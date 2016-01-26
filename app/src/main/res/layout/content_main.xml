@@ -61,6 +61,7 @@
                 android:src="@drawable/yellow" />
 
             <TextView
+                android:id="@+id/text_player_left"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
@@ -78,6 +79,7 @@
                 android:src="@drawable/red" />
 
             <TextView
+                android:id="@+id/text_player_right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"

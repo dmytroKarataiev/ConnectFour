@@ -1,6 +1,10 @@
-package karataiev.dmytro.connectfour;
+package karataiev.dmytro.connectfour.players;
 
 import java.util.Random;
+
+import karataiev.dmytro.connectfour.Connect4Column;
+import karataiev.dmytro.connectfour.Connect4Game;
+import karataiev.dmytro.connectfour.Connect4Slot;
 
 /**
  * The abstract class for an Agent that plays Connect 4.

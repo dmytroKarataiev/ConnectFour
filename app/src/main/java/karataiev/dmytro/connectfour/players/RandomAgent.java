@@ -1,5 +1,7 @@
-package karataiev.dmytro.connectfour;
+package karataiev.dmytro.connectfour.players;
 import java.util.Random;
+
+import karataiev.dmytro.connectfour.Connect4Game;
 
 /**
  * Randomly moving player. No system or algorithm at all.

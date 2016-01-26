@@ -14,6 +14,13 @@ import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import karataiev.dmytro.connectfour.players.AdvancedAgent;
+import karataiev.dmytro.connectfour.players.Agent;
+import karataiev.dmytro.connectfour.players.BrilliantAgent;
+import karataiev.dmytro.connectfour.players.MyAgent;
+import karataiev.dmytro.connectfour.players.PlayerAgent;
+import karataiev.dmytro.connectfour.players.RandomAgent;
+
 public class MainActivity extends AppCompatActivity {
 
     float initialX, initialY;
