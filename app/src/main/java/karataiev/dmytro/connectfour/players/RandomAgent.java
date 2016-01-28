@@ -31,15 +31,6 @@ public class RandomAgent extends Agent
 	}
 
     /**
-     * Returns the name of this agent.
-     *
-     * @return the agent's name
-     */
-    public String getName()
-    {
-        return "Random";
-    }
-    /**
      * Returns a random valid move. If your agent doesn't know what to do, making a random move
      * can allow the game to go on anyway.
      *

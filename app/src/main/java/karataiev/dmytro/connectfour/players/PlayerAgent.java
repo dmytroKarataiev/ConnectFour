@@ -39,16 +39,4 @@ public class PlayerAgent extends Agent
 
     };
 
-    /**
-     * Returns the name of this agent.
-     *
-     * @return the agent's name
-     */
-    public String getName()
-    {
-        return "Player";
-    }
-
-
-
 }

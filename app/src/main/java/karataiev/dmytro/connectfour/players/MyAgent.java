@@ -62,16 +62,6 @@ public class MyAgent extends Agent
     		}
     	}
     }
-
-    /**
-     * Returns the name of this agent.
-     *
-     * @return the agent's name
-     */
-    public String getName()
-    {
-        return "Beginner";
-    }
     
     /**
      * Recommends column to move (tries to put the ball adjacent to other balls of same color)

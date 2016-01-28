@@ -148,7 +148,4 @@ public class BrilliantAgent extends Agent {
         return var2;
     }
 
-    public String getName() {
-        return "Brilliant";
-    }
 }

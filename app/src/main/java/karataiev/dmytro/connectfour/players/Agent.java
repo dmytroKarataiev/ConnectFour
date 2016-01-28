@@ -19,6 +19,7 @@ public abstract class Agent
     protected Connect4Game myGame;
     protected boolean iAmRed;
     protected Random r;
+    protected String playerName;
 
     /**
      * Constructs a new agent.*
@@ -38,7 +39,9 @@ public abstract class Agent
      *
      * @return the agent's name.
      */
-    public abstract String getName();
+    public String getName() {
+        return playerName;
+    };
 
     /**
      * The way the agent's name is displayed in the game, with its color.
@@ -104,5 +107,13 @@ public abstract class Agent
     }
 
     public abstract void move();
+
+    /**
+     * Method to set player name
+     * @param name String to set as a player name
+     */
+    public void setName(String name) {
+        playerName = name;
+    }
 
 }

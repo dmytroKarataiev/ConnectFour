@@ -43,4 +43,14 @@
     <string name="turn_counter">Turn counter</string>
     <string name="signin_other_error">There was an issue with sign in.  Please try again later.</string>
 
+    <!-- Preferences -->
+    <string name="preferences">Preferences</string>
+    <string name="pref_key" translatable="false">player_name</string>
+    <string name="pref_default">Player</string>
+    <string name="pref_title">Player name</string>
+
+
+
+
+
 </resources>
