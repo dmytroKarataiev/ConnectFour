@@ -12,6 +12,7 @@
     <string name="vsAdvanced">Advanced</string>
     <string name="vsHard">Hard</string>
 
+    <string name="multiplayer">Multiplayer</string>
 
     <!-- Utils string -->
     <string name="sign_in_failed">Failed to sign in. Please check your network connection and try again.</string>
