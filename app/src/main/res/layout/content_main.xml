@@ -32,22 +32,6 @@
             android:textColor="@color/black"
             android:textSize="@dimen/textGame" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin">
-
-
-            <Button
-                android:id="@+id/end"
-                style="@style/ButtonConnectFour"
-                android:text="@string/toEnd" />
-
-        </LinearLayout>
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
