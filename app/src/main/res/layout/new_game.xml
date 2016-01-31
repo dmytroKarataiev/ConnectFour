@@ -86,12 +86,12 @@
                     android:id="@+id/vsPlayer"
                     style="@style/ButtonConnectFour"
                     android:text="@string/vsPlayer" />
-
+                <!--
                 <Button
                     android:id="@+id/multiplayer"
                     style="@style/ButtonConnectFour"
                     android:text="@string/multiplayer" />
-
+                -->
                 <TextView
                     android:id="@+id/status"
                     android:layout_width="wrap_content"

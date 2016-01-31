@@ -9,8 +9,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-import skeleton.SkeletonActivity;
-
 
 public class NewGame extends AppCompatActivity {
 
@@ -91,15 +89,15 @@ public class NewGame extends AppCompatActivity {
             }
 
         });
-
-        skeleton = (Button) findViewById(R.id.multiplayer);
-        skeleton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, SkeletonActivity.class);
-                startActivity(intent);
-            }
-        });
+//
+//        skeleton = (Button) findViewById(R.id.multiplayer);
+//        skeleton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(context, SkeletonActivity.class);
+//                startActivity(intent);
+//            }
+//        });
 
     }
 
