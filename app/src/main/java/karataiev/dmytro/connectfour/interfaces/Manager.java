@@ -22,32 +22,18 @@
  * SOFTWARE.
  */
 
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+package karataiev.dmytro.connectfour.interfaces;
 
-buildscript {
-    repositories {
-        jcenter()
-        mavenCentral()
+import android.content.Context;
 
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.0'
-        classpath 'com.google.gms:google-services:2.0.0-alpha3'
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+/**
+ * Manager interface with initialization and clear functions
+ * Created by karataev on 4/27/16.
+ */
+public interface Manager {
 
+    void init(Context context);
 
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
-    }
+    void clear();
+
 }
-
-allprojects {
-    repositories {
-        jcenter()
-    }
-}
-
-task clean(type: Delete) {
-    delete rootProject.buildDir
-}
-

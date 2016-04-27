@@ -67,15 +67,19 @@
     <string name="start_match">Start Match</string>
     <string name="turn_counter">Turn counter</string>
     <string name="signin_other_error">There was an issue with sign in.  Please try again later.</string>
+    <string name="inv_popup_text">Incoming invitation!</string>
+    <string name="accept_popup_invite">Accept!</string>
+    <string name="is_inviting_you">is challenging you to a game!</string>
+
 
     <!-- Preferences -->
     <string name="preferences">Preferences</string>
     <string name="pref_key" translatable="false">player_name</string>
     <string name="pref_default">Player</string>
     <string name="pref_title">Player name</string>
-
-
-
+    <string name="name_default">player</string>
+    <string name="button_sign_out">Sign Out</string>
+    <string name="default_broadcast">Tick</string>
 
 
 </resources>

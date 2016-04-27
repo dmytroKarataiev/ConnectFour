@@ -31,4 +31,12 @@
     <color name="black">#FFFFFF</color>
     <color name="buttonNormal">#2196F3</color>
     <color name="white">#FFFFFF</color>
+
+    <color name="AccentColor">#cc0000</color>
+    <color name="PopupColor">@color/AccentColor</color>
+    <color name="PopupTextColor">#ffffff</color>
+    <color name="ButtonTextColor">#ffffff</color>
+    <color name="BlurbColor">#a0a0a0</color>
+    <color name="SignOutButtonBackground">#e0e0e0</color>
+    <color name="SignOutButtonTextColor">#404040</color>
 </resources>

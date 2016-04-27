@@ -44,11 +44,11 @@ import karataiev.dmytro.connectfour.players.RandomAgent;
 
 public class MainActivity extends AppCompatActivity {
 
-    float initialX, initialY;
-    Agent yellowPlayer, redPlayer;
-    Connect4Frame mainframe;
-    Connect4Game game;
-    int[] output;
+    private float initialX, initialY;
+    private Agent yellowPlayer, redPlayer;
+    private Connect4Frame mainframe;
+    private Connect4Game game;
+    private int[] output;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
         // gets parameter (type of player) from new game screen
         Bundle b = getIntent().getExtras();
-        int id = b.getInt("player");
+        int id = b.getInt(getString(R.string.name_default));
 
         game = new Connect4Game(7, 6); // create the game; these sizes can be altered for larger or smaller games
 
@@ -69,19 +69,19 @@ public class MainActivity extends AppCompatActivity {
         redPlayer.setName(Utility.getPlayerNameFromPref(getApplicationContext()));
 
         // depending on id variable from new game screen chooses needed player
-        if (id == 1) {
+        if (id == R.id.newGameScreen) {
             yellowPlayer = new MyAgent(game, false); // simple connect four algorithm, tries to block you from winning
             yellowPlayer.setName("Easy");
-        } else if (id == 2) {
+        } else if (id == R.id.vsRandom) {
             yellowPlayer = new RandomAgent(game, false); // moves completely randomly
             yellowPlayer.setName("Random");
-        } else if (id == 3) {
+        } else if (id == R.id.vsPlayer) {
             yellowPlayer = new PlayerAgent(game, false); // second user controlled player
             yellowPlayer.setName("Player");
-        } else if (id == 4) {
+        } else if (id == R.id.vsAdvanced) {
             yellowPlayer = new AdvancedAgent(game, false); // AdvancedPlayer player
             yellowPlayer.setName("Advanced");
-        } else if (id == 5) {
+        } else if (id == R.id.vsHard) {
             yellowPlayer = new BrilliantAgent(game, false); // BrilliantPlayer player
             yellowPlayer.setName("Brilliant");
         }

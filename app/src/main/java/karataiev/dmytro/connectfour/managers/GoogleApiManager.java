@@ -22,32 +22,50 @@
  * SOFTWARE.
  */
 
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+package karataiev.dmytro.connectfour.managers;
 
-buildscript {
-    repositories {
-        jcenter()
-        mavenCentral()
+import android.content.Context;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+
+import karataiev.dmytro.connectfour.interfaces.Manager;
+
+/**
+ * Created by karataev on 4/27/16.
+ */
+public class GoogleApiManager implements Manager, GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener {
+
+    private GoogleApiClient mGoogleApiClient;
+
+    @Override
+    public void init(Context context) {
 
     }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.0'
-        classpath 'com.google.gms:google-services:2.0.0-alpha3'
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
 
 
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
+
+    @Override
+    public void clear() {
+
     }
 }
-
-allprojects {
-    repositories {
-        jcenter()
-    }
-}
-
-task clean(type: Delete) {
-    delete rootProject.buildDir
-}
-

@@ -40,7 +40,6 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
@@ -50,11 +49,11 @@
         android:id="@+id/FrameLayout2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:context=".NewGame"
         tools:showIn="@layout/new_game">
 
+        <!-- INVITATION POPUP -->
         <ImageView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
@@ -62,29 +61,23 @@
             android:src="@drawable/tiles" />
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:paddingLeft="@dimen/main"
-            android:paddingRight="@dimen/main">
-
-            <TextView
-                android:id="@+id/game"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="16dp"
-                android:shadowColor="@color/gray"
-                android:text="@string/status"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text" />
-
-            <LinearLayout
 
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center_horizontal|center_vertical"
                 android:orientation="vertical">
+
+            <LinearLayout android:id="@+id/invitation_popup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView android:id="@+id/incoming_invitation_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/accept_popup_invite"/>
+                <Button android:id="@+id/button_accept_popup_invitation"
+                    style="@style/InvPopupButton"
+                    android:text="@string/accept_popup_invite" />
+            </LinearLayout>
 
                 <Button
                     android:id="@+id/vsRandom"
@@ -110,21 +103,38 @@
                     android:id="@+id/vsPlayer"
                     style="@style/ButtonConnectFour"
                     android:text="@string/vsPlayer" />
-                <!--
+
                 <Button
-                    android:id="@+id/multiplayer"
+                    android:id="@+id/button_invitation"
                     style="@style/ButtonConnectFour"
-                    android:text="@string/multiplayer" />
-                -->
-                <TextView
-                    android:id="@+id/status"
+                    android:text="@string/quick_match" />
+
+                <!-- sign-in button -->
+                <com.google.android.gms.common.SignInButton
+                    android:id="@+id/sign_in_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
+
+                <!-- sign-out button -->
+                <Button
+                    android:id="@+id/sign_out_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/button_sign_out"
+                    style="@style/SignOutButton"
+                    android:visibility="gone"/>
+
+                <Button
+                    android:id="@+id/broadcastScore"
+                    style="@style/ButtonConnectFour"
+                    android:text="@string/default_broadcast" />
+
+
 
             </LinearLayout>
 
 
-        </LinearLayout>
+
     </FrameLayout>
 
 
