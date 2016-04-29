@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ MIT License
+  ~
+  ~ Copyright (c) 2016. Dmytro Karataiev
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all
+  ~ copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  ~ SOFTWARE.
+  -->
+
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".MainActivity" >
+
+    <!-- INVITATION POPUP -->
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/tiles" />
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal|center_vertical"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/invitation_popup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/incoming_invitation_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/accept_popup_invite" />
+
+            <Button
+                android:id="@+id/button_accept_popup_invitation"
+                style="@style/InvPopupButton"
+                android:text="@string/accept_popup_invite" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/vsRandom"
+            style="@style/ButtonConnectFour"
+            android:text="@string/vsRandom" />
+
+        <Button
+            android:id="@+id/newGameScreen"
+            style="@style/ButtonConnectFour"
+            android:text="@string/vsEasy" />
+
+        <Button
+            android:id="@+id/vsAdvanced"
+            style="@style/ButtonConnectFour"
+            android:text="@string/vsAdvanced" />
+
+        <Button
+            android:id="@+id/vsHard"
+            style="@style/ButtonConnectFour"
+            android:text="@string/vsHard" />
+
+        <Button
+            android:id="@+id/vsPlayer"
+            style="@style/ButtonConnectFour"
+            android:text="@string/vsPlayer" />
+
+        <Button
+            android:id="@+id/button_invitation"
+            style="@style/ButtonConnectFour"
+            android:text="@string/quick_match" />
+
+        <!-- sign-in button -->
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/sign_in_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <!-- sign-out button -->
+        <Button
+            android:id="@+id/sign_out_button"
+            style="@style/SignOutButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/button_sign_out"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/broadcastScore"
+            style="@style/ButtonConnectFour"
+            android:text="@string/default_broadcast" />
+
+
+    </LinearLayout>
+
+
+</FrameLayout>
+

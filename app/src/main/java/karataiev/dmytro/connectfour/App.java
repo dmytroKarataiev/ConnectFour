@@ -24,12 +24,34 @@
 
 package karataiev.dmytro.connectfour;
 
+import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
+
+import karataiev.dmytro.connectfour.interfaces.OnGoogleApiChange;
+import karataiev.dmytro.connectfour.managers.MultiplayerManager;
 
 /**
  * Created by karataev on 4/27/16.
  */
 public class App extends Application {
 
+    private static MultiplayerManager sMultiplayerManager;
+
+    private static Context sContext;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        App.sContext = getApplicationContext();
+    }
+
+    public static MultiplayerManager getGoogleApiManager(Activity activity, OnGoogleApiChange listener) {
+        if (sMultiplayerManager == null) {
+            sMultiplayerManager = new MultiplayerManager();
+            sMultiplayerManager.init(activity, listener);
+        }
+        return sMultiplayerManager;
+    }
 
 }

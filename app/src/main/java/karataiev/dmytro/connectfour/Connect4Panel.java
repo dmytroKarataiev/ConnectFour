@@ -24,13 +24,13 @@
 
 package karataiev.dmytro.connectfour;
 
-import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ImageView;
 
 /**
@@ -41,7 +41,7 @@ public class Connect4Panel extends AppCompatActivity {
     private Connect4Game myGame;    // the game to display
     private int slotRadius;  // size of the individual slots (radius)
     private int slotSpacing; // space between slots
-    Activity current;
+    View current;
     ImageView ll;
     int[] dimensions;
     Bitmap bg;
@@ -51,19 +51,19 @@ public class Connect4Panel extends AppCompatActivity {
      *
      * @param game the game to display.
      */
-    public Connect4Panel(Connect4Game game, Activity current) {
+    public Connect4Panel(Connect4Game game, View current, int[] dimensions) {
         this.myGame = game;
         this.slotRadius = 71;
         this.slotSpacing = slotRadius + 5;
         this.ll = (ImageView) current.findViewById(R.id.gameField);
         this.current = current;
+        this.dimensions = dimensions;
     }
 
     /**
      * Paints the current status of the game.
      */
     public void paint() {
-        int[] dimensions = imageViewSize();
         Paint paint = new Paint();
 
         paint.setColor(Color.parseColor("#CD5C5C"));

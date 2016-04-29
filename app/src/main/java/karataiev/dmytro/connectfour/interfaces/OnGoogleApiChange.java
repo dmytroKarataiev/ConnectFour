@@ -22,50 +22,14 @@
  * SOFTWARE.
  */
 
-package karataiev.dmytro.connectfour.managers;
+package karataiev.dmytro.connectfour.interfaces;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-
-import karataiev.dmytro.connectfour.interfaces.Manager;
 
 /**
  * Created by karataev on 4/27/16.
  */
-public class GoogleApiManager implements Manager, GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener {
+public interface OnGoogleApiChange {
+    void onConnectedApi(Bundle bundle);
 
-    private GoogleApiClient mGoogleApiClient;
-
-    @Override
-    public void init(Context context) {
-
-    }
-
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-    }
-
-
-
-    @Override
-    public void clear() {
-
-    }
 }

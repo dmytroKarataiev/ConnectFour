@@ -35,9 +35,9 @@ import android.preference.PreferenceManager;
 public class Utility {
 
     /**
-     * Method to get player name from SharedPreferences
+     * Method to get player mPlayerName from SharedPreferences
      * @param context from which call is being made
-     * @return String name of a player
+     * @return String mPlayerName of a player
      */
     public static String getPlayerNameFromPref(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);

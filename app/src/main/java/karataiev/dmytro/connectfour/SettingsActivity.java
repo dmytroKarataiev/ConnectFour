@@ -44,7 +44,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         // Needs to be changed to the fragment implementation
         addPreferencesFromResource(R.xml.preferences);
 
-        // Set a name from preferences to the player name
+        // Set a mPlayerName from preferences to the player mPlayerName
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_key)));
 
     }

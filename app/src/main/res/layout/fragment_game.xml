@@ -31,12 +31,11 @@
     android:layout_height="match_parent"
     android:adjustViewBounds="true"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".MainActivity"
-    tools:showIn="@layout/activity_main">
+    tools:context=".GamefieldFragment" >
 
     <ImageView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:scaleType="centerCrop"
         android:src="@drawable/tiles" />
 
@@ -102,10 +101,11 @@
 
         <ImageView
             android:id="@+id/gameField"
+            android:layout_margin="@dimen/padding_default"
+            android:background="@color/colorPrimary"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="end"
-            android:adjustViewBounds="true" />
+            android:layout_gravity="end" />
 
     </LinearLayout>
 </FrameLayout>

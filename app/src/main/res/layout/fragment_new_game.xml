@@ -1,0 +1,82 @@
+<!--
+  ~ MIT License
+  ~
+  ~ Copyright (c) 2016. Dmytro Karataiev
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all
+  ~ copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  ~ SOFTWARE.
+  -->
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="karataiev.dmytro.connectfour.NewGameFragment">
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/tiles" />
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal|center_vertical"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/button_continue"
+            style="@style/ButtonConnectFour"
+            android:text="@string/button_continue"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/vsRandom"
+            style="@style/ButtonConnectFour"
+            android:text="@string/vsRandom" />
+
+        <Button
+            android:id="@+id/newGameScreen"
+            style="@style/ButtonConnectFour"
+            android:text="@string/vsEasy" />
+
+        <Button
+            android:id="@+id/vsAdvanced"
+            style="@style/ButtonConnectFour"
+            android:text="@string/vsAdvanced" />
+
+        <Button
+            android:id="@+id/vsHard"
+            style="@style/ButtonConnectFour"
+            android:text="@string/vsHard" />
+
+        <Button
+            android:id="@+id/vsPlayer"
+            style="@style/ButtonConnectFour"
+            android:text="@string/vsPlayer" />
+
+        <Button
+            android:id="@+id/button_multiplayer"
+            style="@style/ButtonConnectFour"
+            android:text="@string/multiplayer" />
+
+    </LinearLayout>
+
+</FrameLayout>

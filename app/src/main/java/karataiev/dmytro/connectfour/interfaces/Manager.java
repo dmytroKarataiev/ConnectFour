@@ -24,7 +24,7 @@
 
 package karataiev.dmytro.connectfour.interfaces;
 
-import android.content.Context;
+import android.app.Activity;
 
 /**
  * Manager interface with initialization and clear functions
@@ -32,7 +32,7 @@ import android.content.Context;
  */
 public interface Manager {
 
-    void init(Context context);
+    void init(Activity context, OnGoogleApiChange listener);
 
     void clear();
 

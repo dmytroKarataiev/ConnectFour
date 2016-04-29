@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package karataiev.dmytro.connectfour.utils;
+package karataiev.dmytro.connectfour.gameutils;
 
 import android.app.Activity;
 import android.app.AlertDialog;
