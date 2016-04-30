@@ -30,6 +30,7 @@ import android.content.Context;
 
 import karataiev.dmytro.connectfour.interfaces.OnGoogleApiChange;
 import karataiev.dmytro.connectfour.managers.MultiplayerManager;
+import karataiev.dmytro.connectfour.managers.RoomManager;
 
 /**
  * Created by karataev on 4/27/16.
@@ -37,6 +38,7 @@ import karataiev.dmytro.connectfour.managers.MultiplayerManager;
 public class App extends Application {
 
     private static MultiplayerManager sMultiplayerManager;
+    private static RoomManager sRoomManager;
 
     private static Context sContext;
 
@@ -52,6 +54,14 @@ public class App extends Application {
             sMultiplayerManager.init(activity, listener);
         }
         return sMultiplayerManager;
+    }
+
+    public static RoomManager getRoomManager(Activity activity) {
+        if (sRoomManager == null) {
+            sRoomManager = new RoomManager();
+            sRoomManager.init(activity);
+        }
+        return sRoomManager;
     }
 
 }

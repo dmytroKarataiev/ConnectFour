@@ -35,14 +35,13 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.games.Games;
 
 import karataiev.dmytro.connectfour.R;
-import karataiev.dmytro.connectfour.interfaces.Manager;
 import karataiev.dmytro.connectfour.interfaces.OnGoogleApiChange;
 import karataiev.dmytro.connectfour.gameutils.BaseGameUtils;
 
 /**
  * Created by karataev on 4/27/16.
  */
-public class MultiplayerManager implements Manager, GoogleApiClient.ConnectionCallbacks,
+public class MultiplayerManager implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TAG = MultiplayerManager.class.getSimpleName();
@@ -85,8 +84,6 @@ public class MultiplayerManager implements Manager, GoogleApiClient.ConnectionCa
         return mGoogleApiClient;
     }
 
-
-    @Override
     public void init(Activity context, OnGoogleApiChange listener) {
 
         onGoogleApiChange = listener;
@@ -130,7 +127,6 @@ public class MultiplayerManager implements Manager, GoogleApiClient.ConnectionCa
         }
     }
 
-    @Override
     public void clear() {
         if (mGoogleApiClient != null) {
             if (mGoogleApiClient.isConnected() || mGoogleApiClient.isConnecting()) {

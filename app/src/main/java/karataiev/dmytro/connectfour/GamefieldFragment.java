@@ -63,7 +63,7 @@ public class GamefieldFragment extends Fragment {
     Connect4Panel mPanel; // the panel (draw & paint)
 
     Agent mRedPlayer, mYellowPlayer;   // the two players playing the game
-    boolean redPlayerturn, mGameActive, mMultiplayer;  // booleans controlling whose turn it is and whether a game is ongoing
+    public boolean redPlayerturn, mGameActive, mMultiplayer;  // booleans controlling whose turn it is and whether a game is ongoing
 
     // Views and Unbinder
     @BindView(R.id.image_player_left) ImageView yellowPlayerImage;
@@ -176,6 +176,7 @@ public class GamefieldFragment extends Fragment {
                                                 .getLowestEmptyIndex(game.getColumn(move)) > -1) {
                                     if (((MainActivity) getActivity()).broadcastScore(move)) {
                                         nextMove(move);
+                                        Log.d(TAG, "move:" + move);
                                     }
                                 }
 
