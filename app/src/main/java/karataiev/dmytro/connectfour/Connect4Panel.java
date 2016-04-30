@@ -29,7 +29,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -37,7 +36,7 @@ import android.widget.ImageView;
  * The panel for displaying the current status of the game itself.
  */
 
-public class Connect4Panel extends AppCompatActivity {
+public class Connect4Panel {
     private Connect4Game myGame;    // the game to display
     private int slotRadius;  // size of the individual slots (radius)
     private int slotSpacing; // space between slots
@@ -138,19 +137,5 @@ public class Connect4Panel extends AppCompatActivity {
         canvas.drawCircle(x, y, slotRadius - 10, old);
     }
 
-    /**
-     * Method to get dimensions ot the screen
-     *
-     * @return dimensions of the current screen
-     */
-    public int[] imageViewSize() {
-        ImageView iv = (ImageView) current.findViewById(R.id.gameField);
-        dimensions = new int[2];
-
-        dimensions[0] = iv.getWidth();
-        dimensions[1] = iv.getHeight();
-
-        return dimensions;
-    }
 }
 

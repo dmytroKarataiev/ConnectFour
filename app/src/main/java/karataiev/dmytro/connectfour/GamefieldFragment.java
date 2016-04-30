@@ -33,12 +33,12 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.Random;
-
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import karataiev.dmytro.connectfour.players.AdvancedAgent;
 import karataiev.dmytro.connectfour.players.Agent;
 import karataiev.dmytro.connectfour.players.BrilliantAgent;
@@ -54,23 +54,24 @@ public class GamefieldFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     private Connect4Game game;
-    private int[] output;
+    private int[] mGamefieldDimensions;
 
     int mGameType;
     String mPlayerName;
 
-    Connect4Game myGame;    // the game itself
-    Connect4Panel myPanel; // the panel (draw & paint)
+    Connect4Game mGame;    // the game itself
+    Connect4Panel mPanel; // the panel (draw & paint)
 
     Agent mRedPlayer, mYellowPlayer;   // the two players playing the game
-    boolean redPlayerturn, mGameActive;  // booleans controlling whose turn it is and whether a game is ongoing
-    Button playToEndButton;
-    TextView status;
-    Random mRandom;   // a random number generator to randomly decide who plays first
+    boolean redPlayerturn, mGameActive, mMultiplayer;  // booleans controlling whose turn it is and whether a game is ongoing
 
-    // Images glow on move
-    ImageView yellowPlayerImage, redPlayerImage;
-    TextView yellowPlayerName, redPlayerName;
+    // Views and Unbinder
+    @BindView(R.id.image_player_left) ImageView yellowPlayerImage;
+    @BindView(R.id.image_player_right) ImageView redPlayerImage;
+    @BindView(R.id.text_player_left) TextView yellowPlayerName;
+    @BindView(R.id.text_player_right) TextView redPlayerName;
+    @BindView(R.id.status) TextView status;
+    Unbinder mUnbinder;
 
     public GamefieldFragment() {
         // Required empty public constructor
@@ -107,12 +108,10 @@ public class GamefieldFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_game, container, false);
 
-        if (savedInstanceState != null) {
-            Log.d(TAG, "onCreateView: not null ");
-        }
+        mUnbinder = ButterKnife.bind(this, rootView);
 
         // gets the dimensions of image view and passes them to paint() function to create gamefield on whole screen
-        output = imageViewSize(rootView);
+        mGamefieldDimensions = imageViewSize(rootView);
 
         // gets parameter (type of player) from new game screen
         game = new Connect4Game(7, 6); // create the game; these sizes can be altered for larger or smaller games
@@ -143,6 +142,11 @@ public class GamefieldFragment extends Fragment {
                 mYellowPlayer = new BrilliantAgent(game, false); // BrilliantPlayer player
                 mYellowPlayer.setName("Brilliant");
                 break;
+            case R.id.button_multiplayer:
+                mYellowPlayer = new PlayerAgent(game, false);
+                mYellowPlayer.setName("Multiplayer");
+                mMultiplayer = true;
+                break;
         }
 
         rootView.setOnTouchListener(new View.OnTouchListener() {
@@ -164,19 +168,30 @@ public class GamefieldFragment extends Fragment {
                         int move = (int) event.getX() / (width / 7);
 
                         if (mGameActive) {
-                            if (redPlayerturn && mRedPlayer instanceof PlayerAgent && (mRedPlayer)
+                            if (mMultiplayer) {
+
+                                if (redPlayerturn && mRedPlayer
+                                        .getLowestEmptyIndex(game.getColumn(move)) > -1 ||
+                                        !redPlayerturn && mYellowPlayer
+                                                .getLowestEmptyIndex(game.getColumn(move)) > -1) {
+                                    if (((MainActivity) getActivity()).broadcastScore(move)) {
+                                        nextMove(move);
+                                    }
+                                }
+
+                            } else if (redPlayerturn && mRedPlayer instanceof PlayerAgent && (mRedPlayer)
                                     .getLowestEmptyIndex(game.getColumn(move)) > -1) {
 
-                                nextMoveButtonPressed(move);
+                                nextMove(move);
                                 if (mGameActive && !(mYellowPlayer instanceof PlayerAgent)) {
-                                    nextMoveButtonPressed(-1);
+                                    nextMove(-1);
                                 }
                             } else if (!redPlayerturn && mYellowPlayer instanceof PlayerAgent && (mYellowPlayer)
                                     .getLowestEmptyIndex(game.getColumn(move)) > -1) {
 
-                                nextMoveButtonPressed(move);
+                                nextMove(move);
                                 if (mGameActive && !(mRedPlayer instanceof PlayerAgent)) {
-                                    nextMoveButtonPressed(-1);
+                                    nextMove(-1);
                                 }
                             }
                         }
@@ -197,21 +212,21 @@ public class GamefieldFragment extends Fragment {
      */
     public int[] imageViewSize(final View rootView) {
 
-        output = new int[2];
+        mGamefieldDimensions = new int[2];
 
         final View iv = rootView.findViewById(R.id.gameField);
 
         iv.post(new Runnable() {
             @Override
             public void run() {
-                output[0] = iv.getMeasuredWidth();
-                output[1] = iv.getMeasuredHeight();
-                Log.d(TAG, "run: " + output[0] + " " + output[1]);
-                Connect4Frame(game, mRedPlayer, mYellowPlayer, rootView);
+                mGamefieldDimensions[0] = iv.getMeasuredWidth();
+                mGamefieldDimensions[1] = iv.getMeasuredHeight();
+                Log.d(TAG, "run: " + mGamefieldDimensions[0] + " " + mGamefieldDimensions[1]);
+                Connect4Frame(game, mRedPlayer, mYellowPlayer, rootView, redPlayerturn);
             }
         });
 
-        return output;
+        return mGamefieldDimensions;
     }
 
     /**
@@ -221,32 +236,21 @@ public class GamefieldFragment extends Fragment {
      * @param redPlayer the agent playing as the red tokens.
      * @param yellowPlayer the agent playing as the yellow tokens.
      */
-    public void Connect4Frame(Connect4Game game, Agent redPlayer, Agent yellowPlayer, View current) {
+    public void Connect4Frame(Connect4Game game, Agent redPlayer, Agent yellowPlayer, View current, boolean firstMove) {
 
-        myGame = game;   // stores the game itself
+        mGame = game;   // stores the game itself
         mRedPlayer = redPlayer;   // stores the red player
         mYellowPlayer = yellowPlayer; //stores the yellow player
         mGameActive = false;   // initially sets that no game is active
-        mRandom = new Random();   // creates the random number generator
-
-        playToEndButton = (Button) current.findViewById(R.id.end);
-        status = (TextView) current.findViewById(R.id.status);
-
-        // Colorful balls
-        yellowPlayerImage = (ImageView) current.findViewById(R.id.image_player_left);
-        redPlayerImage = (ImageView) current.findViewById(R.id.image_player_right);
 
         // Player names
-        yellowPlayerName = (TextView) current.findViewById(R.id.text_player_left);
-        redPlayerName = (TextView) current.findViewById(R.id.text_player_right);
         yellowPlayerName.setText(yellowPlayer.getName());
         redPlayerName.setText(redPlayer.getName());
 
-        myPanel = new Connect4Panel(game, current, output);  // creates the panel for displaying the game
+        mPanel = new Connect4Panel(game, current, mGamefieldDimensions);  // creates the panel for displaying the game
 
-        newGame();
+        newGame(firstMove);
     }
-
 
     /**
      * Changes the text of the update label.
@@ -257,12 +261,12 @@ public class GamefieldFragment extends Fragment {
         status.setText(text);
     }
 
-
     /**
      * Runs the next move of the game.
      */
-    private void nextMove(int move) {
-        Connect4Game oldBoard = new Connect4Game(myGame);   // store the old board for validation
+    public void nextMove(int move) {
+        Log.d(TAG, "move:" + move);
+        Connect4Game oldBoard = new Connect4Game(mGame);   // store the old board for validation
 
         colorPlayerBall(redPlayerturn);
 
@@ -280,71 +284,61 @@ public class GamefieldFragment extends Fragment {
             alert(mRedPlayer.toString() + " plays next...");
         }
 
-        String validateResult = oldBoard.validate(myGame); // check and make sure this is a valid next move for this board
-        if(validateResult.length() > 0) { // if there was a validation error, show it and cancel the game
+        String validateResult = oldBoard.validate(mGame); // check and make sure this is a valid next move for this board
+        if (validateResult.length() > 0) { // if there was a validation error, show it and cancel the game
             alert(validateResult);  // show the error
             mGameActive = false;
+            Log.d(TAG, "nextMove: unvalidated");
         }
         redPlayerturn = !redPlayerturn;   // switch whose turn it is
-        char won = myGame.gameWon();    // check if the game has been won
+        char won = mGame.gameWon();    // check if the game has been won
 
         if (won != 'N') { // if the game has been won...
             mGameActive = false;
+            Log.d(TAG, "nextMove: game has been won");
 
-            if (myGame.gameWon() == 'R') { // if red won, say so
+            if (mGame.gameWon() == 'R') { // if red won, say so
                 alert(mRedPlayer.toString() + " wins!");
-            } else if (myGame.gameWon() == 'Y') { // if yellow won, say so
+            } else if (mGame.gameWon() == 'Y') { // if yellow won, say so
                 alert(mYellowPlayer.toString() + " wins!");
             }
         }
-        else if (myGame.boardFull()) { // if the board is full...
+        else if (mGame.boardFull()) { // if the board is full...
+            Log.d(TAG, "nextMove: board full");
             alert("The game ended in a draw!"); // announce the draw
             mGameActive = false;
         }
 
-        myPanel.paint();
-    }
+        Log.d(TAG, "mGameActive:" + mGameActive);
 
+        mPanel.paint();
+    }
 
     /**
      * Clear the board and start a new game.
      */
-    private void newGame() {
+    public void newGame(boolean firstMove) {
 
-        myGame.clearBoard();
+        mGame.clearBoard();
         mGameActive = true;
-        redPlayerturn = mRandom.nextBoolean();
+        redPlayerturn = firstMove;
 
         if (redPlayerturn) {
             alert(mRedPlayer.toString() + " plays first!");
-            myGame.setRedPlayedFirst(true);
+            mGame.setRedPlayedFirst(true);
         } else {
             alert(mYellowPlayer.toString() + " plays first!");
-            myGame.setRedPlayedFirst(false);
+            mGame.setRedPlayedFirst(false);
         }
 
         colorPlayerBall(!redPlayerturn);
 
-        myPanel.paint();
+        mPanel.paint();
 
         if (mGameActive && (!(mRedPlayer instanceof PlayerAgent) && redPlayerturn ||
                 !(mYellowPlayer instanceof PlayerAgent) && !redPlayerturn)) {
-            nextMoveButtonPressed(-1);
+            nextMove(-1);
         }
-    }
-
-    /**
-     * Reacts to the new game button being pressed.
-     */
-    public void newGameButtonPressed() {
-        newGame();
-    }
-
-    /**
-     * Reacts to the next move button being pressed.
-     */
-    public void nextMoveButtonPressed(int move) {
-        nextMove(move);
     }
 
     /**
@@ -362,10 +356,8 @@ public class GamefieldFragment extends Fragment {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        Log.d(TAG, "onSaveInstanceState: ");
-
+    public void onDestroyView() {
+        super.onDestroyView();
+        mUnbinder.unbind();
     }
 }

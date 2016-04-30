@@ -31,18 +31,33 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
+import karataiev.dmytro.connectfour.interfaces.OnFragmentInteraction;
+
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link OnMultiplayerFragmentInteraction} interface
+ * {@link OnFragmentInteraction} interface
  * to handle interaction events.
  * Use the {@link MultiplayerFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class MultiplayerFragment extends Fragment {
 
-    private OnMultiplayerFragmentInteraction mListener;
+    @OnClick({R.id.sign_in_button,
+            R.id.sign_out_button,
+            R.id.button_accept_popup_invitation,
+            R.id.button_invitation })
+    public void onClick(View view) {
+        mListener.onFragmentClick(view.getId());
+    }
+
+    private Unbinder mUnbinder;
+
+    private OnFragmentInteraction mListener;
 
     public MultiplayerFragment() {
         // Required empty public constructor
@@ -61,14 +76,18 @@ public class MultiplayerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_multiplayer, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_multiplayer, container, false);
+
+        mUnbinder = ButterKnife.bind(this, rootView);
+
+        return rootView;
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnMultiplayerFragmentInteraction) {
-            mListener = (OnMultiplayerFragmentInteraction) context;
+        if (context instanceof OnFragmentInteraction) {
+            mListener = (OnFragmentInteraction) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement onMultiplayerFragmentInteraction");
@@ -81,12 +100,10 @@ public class MultiplayerFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that activity.
-     */
-    public interface OnMultiplayerFragmentInteraction {
-        void onMultiplayerFragmentInteraction(int clickId);
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mUnbinder.unbind();
     }
+
 }

@@ -28,6 +28,8 @@
     android:id="@+id/invitation_popup"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:gravity="center"
     android:orientation="vertical"
     tools:context="karataiev.dmytro.connectfour.MultiplayerFragment">
 
@@ -61,11 +63,6 @@
         android:layout_height="wrap_content"
         android:text="@string/button_sign_out"
         android:visibility="gone" />
-
-    <Button
-        android:id="@+id/broadcastScore"
-        style="@style/ButtonConnectFour"
-        android:text="@string/default_broadcast" />
 
 </LinearLayout>
 

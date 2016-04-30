@@ -55,10 +55,12 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
 import butterknife.ButterKnife;
 import karataiev.dmytro.connectfour.gameutils.BaseGameUtils;
+import karataiev.dmytro.connectfour.interfaces.OnFragmentInteraction;
 import karataiev.dmytro.connectfour.interfaces.OnGoogleApiChange;
 import karataiev.dmytro.connectfour.managers.MultiplayerManager;
 
@@ -70,8 +72,7 @@ public class MainActivity extends AppCompatActivity implements
         RoomStatusUpdateListener,
         RealTimeMessageReceivedListener,
         OnInvitationReceivedListener, OnGoogleApiChange,
-        NewGameFragment.OnNewGameFragmentInteraction,
-        MultiplayerFragment.OnMultiplayerFragmentInteraction {
+        OnFragmentInteraction {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -97,7 +98,8 @@ public class MainActivity extends AppCompatActivity implements
     String mMyId = null;
 
     // Message buffer for sending messages
-    byte[] mMsgBuf = new byte[2];
+    byte[] mMsgBuf = new byte[4];
+    private boolean mYourMove;
     int mScore = 0; // user's current score
 
     // Fragments and corresponding tags
@@ -118,54 +120,6 @@ public class MainActivity extends AppCompatActivity implements
     // If non-null, this is the mGameType of the invitation we received via the
     // invitation listener
     String mIncomingInvitationId = null;
-
-    /*
-    @BindView(R.id.sign_in_button) SignInButton mSignIn;
-    @BindView(R.id.sign_out_button) Button mSignOut;
-    @BindView(R.id.button_invitation) Button mButtonInvitation;
-
-    @OnClick ({ R.id.sign_in_button,
-            R.id.sign_out_button,
-            R.id.button_invitation,
-            R.id.broadcastScore,
-            R.id.button_accept_popup_invitation })
-    public void setOnClick(View v) {
-        switch (v.getId()) {
-            case R.id.sign_in_button:
-                // start the asynchronous sign in flow
-                mMultiplayerManager.setSignInClicked(true);
-                mGoogleApiClient.connect();
-                break;
-            case R.id.sign_out_button:
-                // sign out.
-                mMultiplayerManager.setSignInClicked(false);
-                mGoogleApiClient.disconnect();
-
-                Games.signOut(mGoogleApiClient);
-
-                mSignOut.setVisibility(View.GONE);
-                mSignIn.setVisibility(View.VISIBLE);
-                break;
-            case R.id.button_invitation:
-                Intent intent = Games.RealTimeMultiplayer.getSelectOpponentsIntent(mGoogleApiClient, 1, 1);
-                startActivityForResult(intent, RC_SELECT_PLAYERS);
-                break;
-            case R.id.broadcastScore:
-                mScore++;
-                broadcastScore(true);
-                break;
-            case R.id.button_accept_popup_invitation:
-                // user wants to accept the invitation shown on the invitation popup
-                // (the one we got through the OnInvitationReceivedListener).
-                acceptInviteToRoom(mIncomingInvitationId);
-                mIncomingInvitationId = null;
-                mMultiplayer = true;
-                break;
-            default:
-                break;
-        }
-    }
-    */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -213,9 +167,6 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onConnectedApi(@Nullable Bundle bundle) {
         Log.d(TAG, "onConnected() called. Sign in successful!");
-
-        Log.d(TAG, "Sign-in succeeded.");
-
         // register listener so we are notified if we receive an invitation to play
         // while we are in the game
         Games.Invitations.registerInvitationListener(mGoogleApiClient, this);
@@ -313,11 +264,14 @@ public class MainActivity extends AppCompatActivity implements
         if (statusCode != GamesStatusCodes.STATUS_OK) {
             // let screen go to sleep
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
             // show error message, return to main screen.
         }
         // save room ID so we can leave cleanly before the game starts.
         mRoomId = room.getRoomId();
+
+        mYourMove = new Random().nextBoolean();
+        mMsgBuf[2] = (byte) (mYourMove ? 'R' : 'Y');
+        Log.d(TAG, "On Room Created: " + mMsgBuf[2] + " yourMove: " + mYourMove);
     }
 
     @Override
@@ -327,7 +281,6 @@ public class MainActivity extends AppCompatActivity implements
         if (statusCode != GamesStatusCodes.STATUS_OK) {
             // let screen go to sleep
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
             // show error message, return to main screen.
         }
     }
@@ -344,11 +297,17 @@ public class MainActivity extends AppCompatActivity implements
         if (statusCode != GamesStatusCodes.STATUS_OK) {
             // let screen go to sleep
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
             // show error message, return to main screen.
         }
         updateRoom(room);
-
+        // TODO: 4/29/16 fix
+        mGamefieldFragment = GamefieldFragment.newInstance("Multi", R.id.button_multiplayer);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.container, mGamefieldFragment, FRAGMENT_GAMEFIELD)
+                .commit();
+        mGamefieldFragment.mMultiplayer = true;
+        mMultiplayer = true;
+        broadcastScore(-1);
     }
 
     // are we already playing?
@@ -409,8 +368,6 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onConnectedToRoom(Room room) {
-        Log.d(TAG, "onConnectedToRoom.");
-
         //get participants and my ID:
         mParticipants = room.getParticipants();
         mMyId = room.getParticipantId(Games.Players.getCurrentPlayerId(mGoogleApiClient));
@@ -477,7 +434,6 @@ public class MainActivity extends AppCompatActivity implements
             mParticipants = room.getParticipants();
         }
         if (mParticipants != null) {
-            Log.d(TAG, "updateRoom: ");
         }
     }
 
@@ -503,46 +459,53 @@ public class MainActivity extends AppCompatActivity implements
     public void onRealTimeMessageReceived(RealTimeMessage rtm) {
         byte[] buf = rtm.getMessageData();
         String sender = rtm.getSenderParticipantId();
-        Log.d(TAG, "Message received: " + (char) buf[0] + "/" + (int) buf[1]);
+        Log.d(TAG, "Message received: " + (char) buf[0] + "/" + (int) buf[1] + "/" + (char) buf[2]);
 
-        if (buf[0] == 'F' || buf[0] == 'U') {
-            // score update.
-            int existingScore = mParticipantScore.containsKey(sender) ?
-                    mParticipantScore.get(sender) : 0;
-            int thisScore = (int) buf[1];
-            if (thisScore > existingScore) {
-                // this check is necessary because packets may arrive out of
-                // order, so we
-                // should only ever consider the highest score we received, as
-                // we know in our
-                // game there is no way to lose points. If there was a way to
-                // lose points,
-                // we'd have to add a "serial number" to the packet.
-                mParticipantScore.put(sender, thisScore);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        mGamefieldFragment = (GamefieldFragment) fragmentManager.findFragmentByTag(FRAGMENT_GAMEFIELD);
+
+        if (buf[1] == -1 && ((char) buf[2] == 'R' || (char) buf[2] == 'Y')) {
+            Log.d(TAG, "First launch: " + buf[2] + " " + (buf[2] == 'R'));
+            if (buf[2] == 'R') {
+                mYourMove = false;
+                mGamefieldFragment.newGame(false);
+            } else if (buf[2] == 'Y') {
+                mYourMove = true;
+                mGamefieldFragment.newGame(true);
             }
+        } else if (buf[1] != -1) {
+            mYourMove = !mYourMove;
+            Log.d(TAG, "mYourMove:" + mYourMove);
+        }
+
+        int thisScore = (int) buf[1];
+        if (thisScore != -1) {
+            mParticipantScore.put(sender, thisScore);
 
             // update the scores on the screen
             updatePeerScoresDisplay();
 
-            // if it's a final score, mark this participant as having finished
-            // the game
-            if ((char) buf[0] == 'F') {
-                mFinishedParticipants.add(rtm.getSenderParticipantId());
+            if (mGamefieldFragment != null) {
+                mGamefieldFragment.nextMove(thisScore);
             }
+
+            // if it's a final score, mark this participant as having finished the game
+            mFinishedParticipants.add(rtm.getSenderParticipantId());
         }
     }
 
     // Broadcast my score to everybody else.
-    void broadcastScore(boolean finalScore) {
+    public boolean broadcastScore(int finalScore) {
 
-        Log.d(TAG, "mMultiplayer:" + mMultiplayer);
-        if (!mMultiplayer) { return; } // playing single-player mode
+        Log.d(TAG, "mMultiplayer:" + mMultiplayer + " move: " + mYourMove + " " +
+                (!mYourMove && finalScore > -1) + " score: " + finalScore);
+        if (!mMultiplayer || (!mYourMove && finalScore > -1)) { return false; } // playing single-player mode
 
         // First byte in message indicates whether it's a final score or not
-        mMsgBuf[0] = (byte) (finalScore ? 'F' : 'U');
+        mMsgBuf[0] = (byte) 'F';
 
         // Second byte is the score.
-        mMsgBuf[1] = (byte) mScore;
+        mMsgBuf[1] = (byte) finalScore;
 
         Log.d(TAG, "mParticipants.size():" + mParticipants.size());
 
@@ -550,17 +513,20 @@ public class MainActivity extends AppCompatActivity implements
         for (Participant p : mParticipants) {
             if (p.getParticipantId().equals(mMyId)) { continue; }
             if (p.getStatus() != Participant.STATUS_JOINED) { continue; }
-            if (finalScore) {
-                Log.d(TAG, "send reliable");
-                // final score notification must be sent via reliable message
-                Games.RealTimeMultiplayer.sendReliableMessage(mGoogleApiClient, null, mMsgBuf,
-                        mRoomId, p.getParticipantId());
-            } else {
-                // it's an interim score notification, so we can use unreliable
-                Games.RealTimeMultiplayer.sendUnreliableMessage(mGoogleApiClient, mMsgBuf, mRoomId,
-                        p.getParticipantId());
-            }
+
+            Log.d(TAG, "send reliable");
+            // final score notification must be sent via reliable message
+            Games.RealTimeMultiplayer.sendReliableMessage(mGoogleApiClient, null, mMsgBuf,
+                    mRoomId, p.getParticipantId());
         }
+
+        if (finalScore == -1) {
+            mMsgBuf[2] = 0;
+        } else {
+            mYourMove = !mYourMove;
+        }
+
+        return true;
     }
 
     // updates the screen with the scores from our peers
@@ -591,11 +557,9 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onInvitationRemoved(String invitationId) {
-
         if (mIncomingInvitationId != null && mIncomingInvitationId.equals(invitationId)) {
             mIncomingInvitationId = null;
         }
-
     }
 
     // Handle the result of the invitation inbox UI, where the player can pick an invitation
@@ -634,15 +598,18 @@ public class MainActivity extends AppCompatActivity implements
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
+    // TODO: 4/29/16 add multiplayer fragment onBackPressed
     @Override
     public void onBackPressed() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         if (fragmentManager.findFragmentByTag(FRAGMENT_GAMEFIELD) != null &&
                 fragmentManager.findFragmentByTag(FRAGMENT_GAMEFIELD).isVisible()) {
+
             fragmentManager.beginTransaction()
                     .add(R.id.container, mNewGameFragment, FRAGMENT_NEWGAME)
                     .hide(mGamefieldFragment)
                     .commit();
+
             isContinueVisible = true;
         } else {
             isContinueVisible = false;
@@ -651,7 +618,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onFragmentInteraction(int click) {
+    public void onFragmentClick(int click) {
         FragmentManager fragmentManager = getSupportFragmentManager();
 
         switch (click) {
@@ -669,6 +636,36 @@ public class MainActivity extends AppCompatActivity implements
                             .commit();
                 }
                 break;
+            case R.id.sign_in_button:
+                // start the asynchronous sign in flow
+                mMultiplayerManager.setSignInClicked(true);
+                mGoogleApiClient.connect();
+                break;
+            case R.id.sign_out_button:
+                // sign out.
+                mMultiplayerManager.setSignInClicked(false);
+                mGoogleApiClient.disconnect();
+
+                Games.signOut(mGoogleApiClient);
+
+                //mSignOut.setVisibility(View.GONE);
+                //mSignIn.setVisibility(View.VISIBLE);
+                break;
+            case R.id.button_invitation:
+                Intent intent = Games.RealTimeMultiplayer.getSelectOpponentsIntent(mGoogleApiClient, 1, 1);
+                startActivityForResult(intent, RC_SELECT_PLAYERS);
+                break;
+            case R.id.broadcastScore:
+                mScore++;
+                broadcastScore(mScore);
+                break;
+            case R.id.button_accept_popup_invitation:
+                // user wants to accept the invitation shown on the invitation popup
+                // (the one we got through the OnInvitationReceivedListener).
+                acceptInviteToRoom(mIncomingInvitationId);
+                mIncomingInvitationId = null;
+                mMultiplayer = true;
+                break;
             default:
                 mGamefieldFragment = GamefieldFragment.newInstance(getString(R.string.name_default), click);
                 fragmentManager.beginTransaction()
@@ -678,8 +675,4 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-    @Override
-    public void onMultiplayerFragmentInteraction(int clickId) {
-
-    }
 }

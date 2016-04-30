@@ -35,6 +35,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import karataiev.dmytro.connectfour.interfaces.OnFragmentInteraction;
 
 /**
  * Fragment to start a new game,
@@ -44,7 +45,7 @@ public class NewGameFragment extends Fragment {
 
     private static final String TAG = NewGameFragment.class.getSimpleName();
 
-    private OnNewGameFragmentInteraction mListener;
+    private OnFragmentInteraction mListener;
 
     @BindView(R.id.button_continue) Button mButtonContinue;
 
@@ -56,7 +57,7 @@ public class NewGameFragment extends Fragment {
             R.id.button_multiplayer,
             R.id.button_continue })
     public void startGame(View view) {
-        mListener.onFragmentInteraction(view.getId());
+        mListener.onFragmentClick(view.getId());
     }
 
     private Unbinder mUnbinder;
@@ -90,8 +91,8 @@ public class NewGameFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnNewGameFragmentInteraction) {
-            mListener = (OnNewGameFragmentInteraction) context;
+        if (context instanceof OnFragmentInteraction) {
+            mListener = (OnFragmentInteraction) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnNewGameFragmentInteraction");
@@ -102,15 +103,6 @@ public class NewGameFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that activity.
-     */
-    public interface OnNewGameFragmentInteraction {
-        void onFragmentInteraction(int click);
     }
 
     @Override
