@@ -33,12 +33,6 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".GamefieldFragment" >
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:src="@drawable/tiles" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -52,7 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="@string/status"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="@dimen/textGame" />
 
         <RelativeLayout
@@ -102,7 +96,6 @@
         <ImageView
             android:id="@+id/gameField"
             android:layout_margin="@dimen/padding_default"
-            android:background="@color/colorPrimary"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="end" />

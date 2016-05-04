@@ -28,12 +28,6 @@
     android:layout_height="match_parent"
     tools:context="karataiev.dmytro.connectfour.NewGameFragment">
 
-    <ImageView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:scaleType="centerCrop"
-        android:src="@drawable/tiles" />
-
     <LinearLayout
 
         android:layout_width="match_parent"

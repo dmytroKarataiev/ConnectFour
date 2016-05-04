@@ -33,17 +33,6 @@
     android:orientation="vertical"
     tools:context="karataiev.dmytro.connectfour.MultiplayerFragment">
 
-    <TextView
-        android:id="@+id/incoming_invitation_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/accept_popup_invite" />
-
-    <Button
-        android:id="@+id/button_accept_popup_invitation"
-        style="@style/InvPopupButton"
-        android:text="@string/accept_popup_invite" />
-
     <Button
         android:id="@+id/button_invitation"
         style="@style/ButtonConnectFour"

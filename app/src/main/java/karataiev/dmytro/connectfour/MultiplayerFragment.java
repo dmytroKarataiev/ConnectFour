@@ -30,7 +30,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
+import com.google.android.gms.common.SignInButton;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
@@ -47,9 +51,14 @@ import karataiev.dmytro.connectfour.interfaces.OnFragmentInteraction;
  */
 public class MultiplayerFragment extends Fragment {
 
+    private static final String TAG = MultiplayerFragment.class.getSimpleName();
+
+    @BindView(R.id.sign_in_button) SignInButton mSignInButton;
+    @BindView(R.id.sign_out_button) Button mSignOutButton;
+    @BindView(R.id.button_invitation) Button mInviteButton;
+
     @OnClick({R.id.sign_in_button,
             R.id.sign_out_button,
-            R.id.button_accept_popup_invitation,
             R.id.button_invitation })
     public void onClick(View view) {
         mListener.onFragmentClick(view.getId());
@@ -80,6 +89,13 @@ public class MultiplayerFragment extends Fragment {
 
         mUnbinder = ButterKnife.bind(this, rootView);
 
+        if (((MainActivity) getActivity()).mGoogleApiClient.isConnected() ||
+                ((MainActivity) getActivity()).mGoogleApiClient.isConnecting()) {
+            showUi(true);
+        } else {
+            showUi(false);
+        }
+
         return rootView;
     }
 
@@ -106,4 +122,17 @@ public class MultiplayerFragment extends Fragment {
         mUnbinder.unbind();
     }
 
+    public void showUi(boolean connected) {
+        if (this.isVisible()) {
+            if (connected) {
+                mInviteButton.setVisibility(View.VISIBLE);
+                mSignInButton.setVisibility(View.GONE);
+                mSignOutButton.setVisibility(View.VISIBLE);
+            } else {
+                mInviteButton.setVisibility(View.GONE);
+                mSignOutButton.setVisibility(View.GONE);
+                mSignInButton.setVisibility(View.VISIBLE);
+            }
+        }
+    }
 }

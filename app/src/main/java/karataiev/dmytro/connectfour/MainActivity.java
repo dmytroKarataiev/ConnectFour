@@ -33,7 +33,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -52,6 +54,7 @@ import java.util.Map;
 import java.util.Set;
 
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import karataiev.dmytro.connectfour.gameutils.BaseGameUtils;
 import karataiev.dmytro.connectfour.interfaces.OnFragmentInteraction;
 import karataiev.dmytro.connectfour.interfaces.OnGoogleApiChange;
@@ -67,6 +70,15 @@ public class MainActivity extends AppCompatActivity implements
         OnFragmentInteraction {
 
     private static final String TAG = MainActivity.class.getSimpleName();
+
+    static LinearLayout mInvitationPopup;
+    static TextView mInvitationText;
+
+    @OnClick(R.id.button_accept_popup_invitation)
+    public void acceptInvite(View view) {
+        onFragmentClick(view.getId());
+        mInvitationPopup.setVisibility(View.GONE);
+    }
 
     private MultiplayerManager mMultiplayerManager;
     private RoomManager mRoomManager;
@@ -89,7 +101,6 @@ public class MainActivity extends AppCompatActivity implements
     // Message buffer for sending messages
     public byte[] mMsgBuf = new byte[4];
     public boolean mYourMove;
-    int mScore = 0; // user's current score
 
     // Fragments and corresponding tags
     public NewGameFragment mNewGameFragment;
@@ -107,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements
 
     // If non-null, this is the mGameType of the invitation we received via the
     // invitation listener
-    String mIncomingInvitationId = null;
+    static String mIncomingInvitationId = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +126,8 @@ public class MainActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
+        mInvitationPopup = ButterKnife.findById(this, R.id.invitation_popup);
+        mInvitationText = ButterKnife.findById(this, R.id.incoming_invitation_text);
 
         if (savedInstanceState == null) {
             mNewGameFragment = NewGameFragment.newInstance();
@@ -178,11 +191,14 @@ public class MainActivity extends AppCompatActivity implements
                                     Intent intent) {
         switch (requestCode) {
             case RC_SIGN_IN:
+                Log.d(TAG, "onActivityResult with requestCode == RC_SIGN_IN, responseCode="
+                        + resultCode + ", intent=" + intent);
                 mMultiplayerManager.setSignInClicked(false);
                 mMultiplayerManager.setResolvingConnectionFailure(false);
                 if (resultCode == RESULT_OK) {
                     mGoogleApiClient.connect();
                 } else {
+                    Log.d(TAG, "onActivityResult: errrorororororoor");
                     // Bring up an error dialog to alert the user that sign-in
                     // failed. The R.string.signin_failure should reference an error
                     // string in your strings.xml file that tells the user they
@@ -293,10 +309,13 @@ public class MainActivity extends AppCompatActivity implements
         // We got an invitation to play a game! So, store it in
         // mIncomingInvitationId
         // and show the popup on the screen.
+        mInvitationPopup.setVisibility(View.VISIBLE);
         mIncomingInvitationId = invitation.getInvitationId();
-        ((TextView) findViewById(R.id.incoming_invitation_text)).setText(
-                invitation.getInviter().getDisplayName() + " " +
-                        getString(R.string.is_inviting_you));
+
+        String invitationText = invitation.getInviter().getDisplayName() + " " +
+                getString(R.string.is_inviting_you);
+
+        mInvitationText.setText(invitationText);
     }
 
     @Override
@@ -362,6 +381,7 @@ public class MainActivity extends AppCompatActivity implements
 
     // Accept the given invitation.
     void acceptInviteToRoom(String invId) {
+        Log.d(TAG, invId);
         if (invId != null) {
             // accept the invitation
             Log.d(TAG, "Accepting invitation: " + invId);
@@ -406,6 +426,14 @@ public class MainActivity extends AppCompatActivity implements
                     .commit();
 
             isContinueVisible = true;
+        } else if (fragmentManager.findFragmentByTag(FRAGMENT_MULTIPLAYER) != null &&
+                fragmentManager.findFragmentByTag(FRAGMENT_MULTIPLAYER).isVisible()) {
+
+            fragmentManager.beginTransaction()
+                    .add(R.id.container, mNewGameFragment, FRAGMENT_NEWGAME)
+                    .hide(mMultiplayerFragment)
+                    .commit();
+
         } else {
             isContinueVisible = false;
             finish();
@@ -439,25 +467,19 @@ public class MainActivity extends AppCompatActivity implements
             case R.id.sign_out_button:
                 // sign out.
                 mMultiplayerManager.setSignInClicked(false);
-                mGoogleApiClient.disconnect();
-
                 Games.signOut(mGoogleApiClient);
-
-                //mSignOut.setVisibility(View.GONE);
-                //mSignIn.setVisibility(View.VISIBLE);
+                mGoogleApiClient.disconnect();
+                switchToScreen(SCREEN_INITIAL);
                 break;
             case R.id.button_invitation:
                 Intent intent = Games.RealTimeMultiplayer.getSelectOpponentsIntent(mGoogleApiClient, 1, 1);
                 startActivityForResult(intent, RC_SELECT_PLAYERS);
                 break;
-            case R.id.broadcastScore:
-                mScore++;
-                broadcastScore(mScore);
-                break;
             case R.id.button_accept_popup_invitation:
                 // user wants to accept the invitation shown on the invitation popup
                 // (the one we got through the OnInvitationReceivedListener).
                 acceptInviteToRoom(mIncomingInvitationId);
+                Log.d(TAG, "onFragmentClick: NULL INVITATION ");
                 mIncomingInvitationId = null;
                 mMultiplayer = true;
                 break;
@@ -503,27 +525,35 @@ public class MainActivity extends AppCompatActivity implements
     public static final int SCREEN_INITIAL = 0;
     public static final int SCREEN_LOGGED = 1;
 
-
     // Leave the room.
-    void leaveRoom() {
+    public void leaveRoom() {
         Log.d(TAG, "Leaving room.");
         stopKeepingScreenOn();
         if (mRoomId != null) {
             Games.RealTimeMultiplayer.leave(mGoogleApiClient, mRoomManager, mRoomId);
             mRoomId = null;
-            switchToScreen(SCREEN_INITIAL);
-        } else {
-            switchToScreen(SCREEN_INITIAL);
         }
+        switchToScreen(SCREEN_INITIAL);
+
     }
 
     public void switchToScreen(int screenId) {
         switch (screenId) {
             case SCREEN_INITIAL:
                 //hide invite, accept
+                if (mMultiplayerFragment != null) {
+                    mMultiplayerFragment.showUi(false);
+                    if (mGamefieldFragment != null) {
+                        // TODO: 5/4/16 change logic
+                        onBackPressed();
+                    }
+                }
                 break;
             case SCREEN_LOGGED:
                 // show controls
+                if (mMultiplayerFragment != null) {
+                    mMultiplayerFragment.showUi(true);
+                }
                 break;
         }
     }
