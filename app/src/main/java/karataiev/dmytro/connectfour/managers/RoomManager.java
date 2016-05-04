@@ -25,6 +25,7 @@
 package karataiev.dmytro.connectfour.managers;
 
 import android.app.Activity;
+import android.os.Handler;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 
@@ -77,15 +78,17 @@ public class RoomManager implements RoomUpdateListener,
         if (statusCode != GamesStatusCodes.STATUS_OK) {
             // let screen go to sleep
             mActivity.keepScreenOn();
+            Log.d(TAG, "onRoomCreated Error (" + statusCode + ", " + room + ")");
+
             // show error message, return to main screen.
+        } else {
+            // save room ID so we can leave cleanly before the game starts.
+            mActivity.mRoomId = room.getRoomId();
+            mActivity.mYourMove = new Random().nextBoolean();
+            mActivity.mMsgBuf[2] = (byte) (mActivity.mYourMove ? 'R' : 'Y');
+            Log.d(TAG, "On Room Created: " + mActivity.mMsgBuf[2] + " yourMove: " + mActivity.mYourMove);
         }
-        
-        // save room ID so we can leave cleanly before the game starts.
-        mActivity.mRoomId = room.getRoomId();
-        mActivity.mYourMove = new Random().nextBoolean();
-        mActivity.mMsgBuf[2] = (byte) (mActivity.mYourMove ? 'R' : 'Y');
-        Log.d(TAG, "On Room Created: " + mActivity.mMsgBuf[2] + " yourMove: " + mActivity.mYourMove);
-        
+
     }
 
     @Override
@@ -117,13 +120,18 @@ public class RoomManager implements RoomUpdateListener,
         mActivity.updateRoom(room);
         // TODO: 4/29/16 fix
         mActivity.mGamefieldFragment = GamefieldFragment.newInstance("Multi", R.id.button_multiplayer);
-        mActivity.getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container, mActivity.mGamefieldFragment, MainActivity.FRAGMENT_GAMEFIELD)
-                .commit();
-        mActivity.mGamefieldFragment.mMultiplayer = true;
-        mActivity.mMultiplayer = true;
-        mActivity.broadcastScore(-1);
-        
+
+        new Handler().post(new Runnable() {
+            public void run() {
+                mActivity.getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.container, mActivity.mGamefieldFragment, MainActivity.FRAGMENT_GAMEFIELD)
+                        .commit();
+                mActivity.mGamefieldFragment.mMultiplayer = true;
+                mActivity.mMultiplayer = true;
+                mActivity.broadcastScore(-1);
+            }
+        });
+
     }
 
     @Override
@@ -135,6 +143,10 @@ public class RoomManager implements RoomUpdateListener,
 
         FragmentManager fragmentManager = mActivity.getSupportFragmentManager();
         mActivity.mGamefieldFragment = (GamefieldFragment) fragmentManager.findFragmentByTag(MainActivity.FRAGMENT_GAMEFIELD);
+
+        if (mActivity.mGamefieldFragment == null) {
+            mActivity.mGamefieldFragment = GamefieldFragment.newInstance("user", R.id.button_multiplayer);
+        }
 
         if (buf[1] == -1 && ((char) buf[2] == 'R' || (char) buf[2] == 'Y')) {
             Log.d(TAG, "First launch: " + buf[2] + " " + (buf[2] == 'R'));

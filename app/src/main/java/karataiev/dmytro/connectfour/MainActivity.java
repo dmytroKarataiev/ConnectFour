@@ -170,6 +170,7 @@ public class MainActivity extends AppCompatActivity implements
                 acceptInviteToRoom(inv.getInvitationId());
             }
         }
+        switchToScreen(SCREEN_LOGGED);
     }
 
     @Override
@@ -361,16 +362,22 @@ public class MainActivity extends AppCompatActivity implements
 
     // Accept the given invitation.
     void acceptInviteToRoom(String invId) {
-        // accept the invitation
-        Log.d(TAG, "Accepting invitation: " + invId);
-        RoomConfig.Builder roomConfigBuilder = makeBasicRoomConfigBuilder();
-        roomConfigBuilder.setInvitationIdToAccept(invId);
-        keepScreenOn();
-        Games.RealTimeMultiplayer.join(mGoogleApiClient, roomConfigBuilder.build());
+        if (invId != null) {
+            // accept the invitation
+            Log.d(TAG, "Accepting invitation: " + invId);
+            RoomConfig.Builder roomConfigBuilder = makeBasicRoomConfigBuilder();
+            roomConfigBuilder.setInvitationIdToAccept(invId);
+            keepScreenOn();
+            Games.RealTimeMultiplayer.join(mGoogleApiClient, roomConfigBuilder.build());
+        } else {
+            Log.d(TAG, "null:" + null);
+        }
     }
 
     // create a RoomConfigBuilder that's appropriate for your implementation
     private RoomConfig.Builder makeBasicRoomConfigBuilder() {
+
+        mRoomManager.init(this);
         return mRoomManager.getRoomConfig();
     }
 
@@ -379,6 +386,11 @@ public class MainActivity extends AppCompatActivity implements
     // game will be cancelled.
     public void keepScreenOn() {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    }
+
+    // Clears the flag that keeps the screen on.
+    void stopKeepingScreenOn() {
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     // TODO: 4/29/16 add multiplayer fragment onBackPressed
@@ -458,4 +470,61 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
+    @Override
+    protected void onStart() {
+        if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
+            Log.w(TAG,
+                    "GameHelper: client was already connected on onStart()");
+        } else {
+            Log.d(TAG, "Connecting client.");
+            mGoogleApiClient.connect();
+        }
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        Log.d(TAG, "**** got onStop");
+
+        // if we're in a room, leave it.
+        leaveRoom();
+
+        // stop trying to keep the screen on
+        stopKeepingScreenOn();
+
+        if (mGoogleApiClient == null || !mGoogleApiClient.isConnected()) {
+            switchToScreen(SCREEN_INITIAL);
+        } else {
+            switchToScreen(SCREEN_LOGGED);
+        }
+        super.onStop();
+    }
+
+    public static final int SCREEN_INITIAL = 0;
+    public static final int SCREEN_LOGGED = 1;
+
+
+    // Leave the room.
+    void leaveRoom() {
+        Log.d(TAG, "Leaving room.");
+        stopKeepingScreenOn();
+        if (mRoomId != null) {
+            Games.RealTimeMultiplayer.leave(mGoogleApiClient, mRoomManager, mRoomId);
+            mRoomId = null;
+            switchToScreen(SCREEN_INITIAL);
+        } else {
+            switchToScreen(SCREEN_INITIAL);
+        }
+    }
+
+    public void switchToScreen(int screenId) {
+        switch (screenId) {
+            case SCREEN_INITIAL:
+                //hide invite, accept
+                break;
+            case SCREEN_LOGGED:
+                // show controls
+                break;
+        }
+    }
 }

@@ -176,7 +176,6 @@ public class GamefieldFragment extends Fragment {
                                                 .getLowestEmptyIndex(game.getColumn(move)) > -1) {
                                     if (((MainActivity) getActivity()).broadcastScore(move)) {
                                         nextMove(move);
-                                        Log.d(TAG, "move:" + move);
                                     }
                                 }
 
@@ -319,26 +318,28 @@ public class GamefieldFragment extends Fragment {
      * Clear the board and start a new game.
      */
     public void newGame(boolean firstMove) {
+        if (mGame != null) {
+            mGame.clearBoard();
 
-        mGame.clearBoard();
-        mGameActive = true;
-        redPlayerturn = firstMove;
+            mGameActive = true;
+            redPlayerturn = firstMove;
 
-        if (redPlayerturn) {
-            alert(mRedPlayer.toString() + " plays first!");
-            mGame.setRedPlayedFirst(true);
-        } else {
-            alert(mYellowPlayer.toString() + " plays first!");
-            mGame.setRedPlayedFirst(false);
-        }
+            if (redPlayerturn) {
+                alert(mRedPlayer.toString() + " plays first!");
+                mGame.setRedPlayedFirst(true);
+            } else {
+                alert(mYellowPlayer.toString() + " plays first!");
+                mGame.setRedPlayedFirst(false);
+            }
 
-        colorPlayerBall(!redPlayerturn);
+            colorPlayerBall(!redPlayerturn);
 
-        mPanel.paint();
+            mPanel.paint();
 
-        if (mGameActive && (!(mRedPlayer instanceof PlayerAgent) && redPlayerturn ||
-                !(mYellowPlayer instanceof PlayerAgent) && !redPlayerturn)) {
-            nextMove(-1);
+            if (mGameActive && (!(mRedPlayer instanceof PlayerAgent) && redPlayerturn ||
+                    !(mYellowPlayer instanceof PlayerAgent) && !redPlayerturn)) {
+                nextMove(-1);
+            }
         }
     }
 
