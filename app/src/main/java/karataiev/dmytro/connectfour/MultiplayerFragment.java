@@ -89,14 +89,19 @@ public class MultiplayerFragment extends Fragment {
 
         mUnbinder = ButterKnife.bind(this, rootView);
 
+        return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
         if (((MainActivity) getActivity()).mGoogleApiClient.isConnected() ||
                 ((MainActivity) getActivity()).mGoogleApiClient.isConnecting()) {
             showUi(true);
         } else {
             showUi(false);
         }
-
-        return rootView;
     }
 
     @Override

@@ -211,7 +211,6 @@ public class RoomManager implements RoomUpdateListener,
     @Override
     public void onPeerLeft(Room room, List<String> peers) {
 
-        Log.d(TAG, "onPeerLeft: ");
         mActivity.leaveRoom();
         // peer left -- see if game should be canceled
         if (!mActivity.mPlaying && mActivity.shouldCancelGame(room)) {

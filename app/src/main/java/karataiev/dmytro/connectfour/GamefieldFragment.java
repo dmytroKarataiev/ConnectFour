@@ -36,6 +36,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.Random;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -222,7 +224,7 @@ public class GamefieldFragment extends Fragment {
                 mGamefieldDimensions[0] = iv.getMeasuredWidth();
                 mGamefieldDimensions[1] = iv.getMeasuredHeight();
                 Log.d(TAG, "run: " + mGamefieldDimensions[0] + " " + mGamefieldDimensions[1]);
-                Connect4Frame(game, mRedPlayer, mYellowPlayer, rootView, redPlayerturn);
+                Connect4Frame(game, mRedPlayer, mYellowPlayer, rootView);
             }
         });
 
@@ -236,7 +238,7 @@ public class GamefieldFragment extends Fragment {
      * @param redPlayer the agent playing as the red tokens.
      * @param yellowPlayer the agent playing as the yellow tokens.
      */
-    public void Connect4Frame(Connect4Game game, Agent redPlayer, Agent yellowPlayer, View current, boolean firstMove) {
+    public void Connect4Frame(Connect4Game game, Agent redPlayer, Agent yellowPlayer, View current) {
 
         mGame = game;   // stores the game itself
         mRedPlayer = redPlayer;   // stores the red player
@@ -249,7 +251,7 @@ public class GamefieldFragment extends Fragment {
 
         mPanel = new Connect4Panel(game, current, mGamefieldDimensions);  // creates the panel for displaying the game
 
-        newGame(firstMove);
+        newGame(new Random().nextBoolean());
     }
 
     /**

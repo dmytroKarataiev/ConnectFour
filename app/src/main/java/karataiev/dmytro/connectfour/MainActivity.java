@@ -416,6 +416,7 @@ public class MainActivity extends AppCompatActivity implements
     // TODO: 4/29/16 add multiplayer fragment onBackPressed
     @Override
     public void onBackPressed() {
+        Log.d(TAG, "mMultiplayer:" + mMultiplayer);
         FragmentManager fragmentManager = getSupportFragmentManager();
         if (fragmentManager.findFragmentByTag(FRAGMENT_GAMEFIELD) != null &&
                 fragmentManager.findFragmentByTag(FRAGMENT_GAMEFIELD).isVisible()) {
@@ -425,7 +426,8 @@ public class MainActivity extends AppCompatActivity implements
                     .hide(mGamefieldFragment)
                     .commit();
 
-            isContinueVisible = true;
+            isContinueVisible = mGamefieldFragment.mGameActive;
+
         } else if (fragmentManager.findFragmentByTag(FRAGMENT_MULTIPLAYER) != null &&
                 fragmentManager.findFragmentByTag(FRAGMENT_MULTIPLAYER).isVisible()) {
 
@@ -479,7 +481,6 @@ public class MainActivity extends AppCompatActivity implements
                 // user wants to accept the invitation shown on the invitation popup
                 // (the one we got through the OnInvitationReceivedListener).
                 acceptInviteToRoom(mIncomingInvitationId);
-                Log.d(TAG, "onFragmentClick: NULL INVITATION ");
                 mIncomingInvitationId = null;
                 mMultiplayer = true;
                 break;
@@ -495,8 +496,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onStart() {
         if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
-            Log.w(TAG,
-                    "GameHelper: client was already connected on onStart()");
+            Log.w(TAG, "GameHelper: client was already connected on onStart()");
         } else {
             Log.d(TAG, "Connecting client.");
             mGoogleApiClient.connect();
@@ -505,21 +505,18 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    protected void onStop() {
+    protected void onDestroy() {
+        super.onDestroy();
         Log.d(TAG, "**** got onStop");
 
         // if we're in a room, leave it.
         leaveRoom();
-
-        // stop trying to keep the screen on
-        stopKeepingScreenOn();
 
         if (mGoogleApiClient == null || !mGoogleApiClient.isConnected()) {
             switchToScreen(SCREEN_INITIAL);
         } else {
             switchToScreen(SCREEN_LOGGED);
         }
-        super.onStop();
     }
 
     public static final int SCREEN_INITIAL = 0;
@@ -527,7 +524,7 @@ public class MainActivity extends AppCompatActivity implements
 
     // Leave the room.
     public void leaveRoom() {
-        Log.d(TAG, "Leaving room.");
+        mGamefieldFragment.mGameActive = false;
         stopKeepingScreenOn();
         if (mRoomId != null) {
             Games.RealTimeMultiplayer.leave(mGoogleApiClient, mRoomManager, mRoomId);
@@ -543,10 +540,9 @@ public class MainActivity extends AppCompatActivity implements
                 //hide invite, accept
                 if (mMultiplayerFragment != null) {
                     mMultiplayerFragment.showUi(false);
-                    if (mGamefieldFragment != null) {
-                        // TODO: 5/4/16 change logic
-                        onBackPressed();
-                    }
+                }
+                if (mGamefieldFragment != null) {
+                    onBackPressed();
                 }
                 break;
             case SCREEN_LOGGED:
