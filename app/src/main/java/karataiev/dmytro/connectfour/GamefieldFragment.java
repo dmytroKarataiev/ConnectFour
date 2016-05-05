@@ -146,7 +146,8 @@ public class GamefieldFragment extends Fragment {
                 break;
             case R.id.button_multiplayer:
                 mYellowPlayer = new PlayerAgent(game, false);
-                mYellowPlayer.setName("Multiplayer");
+                mYellowPlayer.setName(mPlayerName);
+
                 mMultiplayer = true;
                 break;
         }
@@ -251,7 +252,11 @@ public class GamefieldFragment extends Fragment {
 
         mPanel = new Connect4Panel(game, current, mGamefieldDimensions);  // creates the panel for displaying the game
 
-        newGame(new Random().nextBoolean());
+        if (mMultiplayer) {
+            newGame(((MainActivity) getActivity()).mYourMove);
+        } else {
+            newGame(new Random().nextBoolean());
+        }
     }
 
     /**

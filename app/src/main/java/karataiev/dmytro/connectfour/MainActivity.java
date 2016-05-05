@@ -99,6 +99,7 @@ public class MainActivity extends AppCompatActivity implements
     public String mMyId = null;
 
     // Message buffer for sending messages
+    public String mParticipantName;
     public byte[] mMsgBuf = new byte[4];
     public boolean mYourMove;
 
@@ -524,7 +525,9 @@ public class MainActivity extends AppCompatActivity implements
 
     // Leave the room.
     public void leaveRoom() {
-        mGamefieldFragment.mGameActive = false;
+        if (mGamefieldFragment != null) {
+            mGamefieldFragment.mGameActive = false;
+        }
         stopKeepingScreenOn();
         if (mRoomId != null) {
             Games.RealTimeMultiplayer.leave(mGoogleApiClient, mRoomManager, mRoomId);

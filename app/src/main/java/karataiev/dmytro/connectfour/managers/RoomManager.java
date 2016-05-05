@@ -31,6 +31,7 @@ import android.util.Log;
 
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.GamesStatusCodes;
+import com.google.android.gms.games.multiplayer.Participant;
 import com.google.android.gms.games.multiplayer.realtime.RealTimeMessage;
 import com.google.android.gms.games.multiplayer.realtime.RealTimeMessageReceivedListener;
 import com.google.android.gms.games.multiplayer.realtime.Room;
@@ -118,15 +119,9 @@ public class RoomManager implements RoomUpdateListener,
         }
 
         mActivity.updateRoom(room);
-        // TODO: 4/29/16 fix
-        mActivity.mGamefieldFragment = GamefieldFragment.newInstance("Multi", R.id.button_multiplayer);
 
         new Handler().post(new Runnable() {
             public void run() {
-                mActivity.getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, mActivity.mGamefieldFragment, MainActivity.FRAGMENT_GAMEFIELD)
-                        .commit();
-                mActivity.mGamefieldFragment.mMultiplayer = true;
                 mActivity.mMultiplayer = true;
                 mActivity.broadcastScore(-1);
             }
@@ -141,28 +136,35 @@ public class RoomManager implements RoomUpdateListener,
         String sender = realTimeMessage.getSenderParticipantId();
         Log.d(TAG, "Message received: " + (char) buf[0] + "/" + (int) buf[1] + "/" + (char) buf[2]);
 
-        FragmentManager fragmentManager = mActivity.getSupportFragmentManager();
-        mActivity.mGamefieldFragment = (GamefieldFragment) fragmentManager.findFragmentByTag(MainActivity.FRAGMENT_GAMEFIELD);
+        if (buf[1] == -1) {
+            for (Participant p : mActivity.mParticipants) {
+                if (p.getParticipantId().equals(sender)) {
+                    mActivity.mParticipantName = p.getDisplayName();
+                }
+            }
 
-        if (mActivity.mGamefieldFragment == null) {
-            mActivity.mGamefieldFragment = GamefieldFragment.newInstance("user", R.id.button_multiplayer);
-        }
-
-        if (buf[1] == -1 && ((char) buf[2] == 'R' || (char) buf[2] == 'Y')) {
-            Log.d(TAG, "First launch: " + buf[2] + " " + (buf[2] == 'R'));
             if (buf[2] == 'R') {
                 mActivity.mYourMove = false;
-                mActivity.mGamefieldFragment.newGame(false);
             } else if (buf[2] == 'Y') {
                 mActivity.mYourMove = true;
-                mActivity.mGamefieldFragment.newGame(true);
             }
+            Log.d(TAG, "First launch: " + buf[2] + " " + mActivity.mYourMove);
+
+            FragmentManager fragmentManager = mActivity.getSupportFragmentManager();
+            mActivity.mGamefieldFragment = GamefieldFragment.newInstance(mActivity.mParticipantName, R.id.button_multiplayer);
+
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, mActivity.mGamefieldFragment, MainActivity.FRAGMENT_GAMEFIELD)
+                    .show(mActivity.mGamefieldFragment)
+                    .commit();
+
         } else if (buf[1] != -1) {
             mActivity.mYourMove = !mActivity.mYourMove;
             Log.d(TAG, "mYourMove:" + mActivity.mYourMove);
         }
 
         int thisScore = (int) buf[1];
+        Log.d(TAG, "thisScore:" + thisScore);
         if (thisScore != -1) {
             mActivity.mParticipantScore.put(sender, thisScore);
 
