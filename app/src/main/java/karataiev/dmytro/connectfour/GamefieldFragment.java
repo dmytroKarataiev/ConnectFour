@@ -24,17 +24,17 @@
 
 package karataiev.dmytro.connectfour;
 
-import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.android.gms.games.Games;
 
 import java.util.Random;
 
@@ -157,19 +157,11 @@ public class GamefieldFragment extends Fragment {
             public boolean onTouch(View v, MotionEvent event) {
                 int action = event.getActionMasked();
 
-                // TODO: 4/27/16 refactor
-                // gets screen size
-                Display display = getActivity().getWindowManager().getDefaultDisplay();
-                Point size = new Point();
-                display.getSize(size);
-                int width = size.x;
+                int move = Utility.getMove(getActivity(), event.getX());
 
                 // different touch activities
                 switch (action) {
                     case MotionEvent.ACTION_DOWN:
-
-                        int move = (int) event.getX() / (width / 7);
-
                         if (mGameActive) {
                             if (mMultiplayer) {
 
@@ -203,6 +195,16 @@ public class GamefieldFragment extends Fragment {
                 return true;
             }
         });
+
+        // check number of played games and unlock achievements
+        if (((MainActivity) getActivity()).mGoogleApiClient != null && 
+                ((MainActivity) getActivity()).mGoogleApiClient.isConnected()) {
+            String achievement = Utility.getAchievement(getContext(), Utility.getPlayedGames(getContext()));
+            if (achievement != null) {
+                // unlock the achievement.
+                Games.Achievements.unlock(((MainActivity) getActivity()).mGoogleApiClient, achievement);
+            }
+        }
 
         return rootView;
     }
@@ -309,14 +311,15 @@ public class GamefieldFragment extends Fragment {
             } else if (mGame.gameWon() == 'Y') { // if yellow won, say so
                 alert(mYellowPlayer.toString() + " wins!");
             }
-        }
-        else if (mGame.boardFull()) { // if the board is full...
+        } else if (mGame.boardFull()) { // if the board is full...
             Log.d(TAG, "nextMove: board full");
             alert("The game ended in a draw!"); // announce the draw
             mGameActive = false;
         }
 
-        Log.d(TAG, "mGameActive:" + mGameActive);
+        if (won != 'N' || mGame.boardFull()) {
+            Utility.incrementPlayedGames(getContext());
+        }
 
         mPanel.paint();
     }
