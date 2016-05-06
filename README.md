@@ -1,4 +1,4 @@
-# Connect Four Game
+# Connect Four Game with Multiplayer
 <a href="https://play.google.com/store/apps/details?id=karataiev.dmytro.connectfour"><img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/apps/en-play-badge.png" width="185" height="60"/></a><br>
 
 ![Screenshots](materials/connect_four_screenshots.png)
@@ -9,10 +9,10 @@ In my implementation of Connect Four you can play against AI players with differ
 You can also play against your real friend. 
 
 ## Future plans
-* Multiplayer
 * New design
 
 ## Used technologies
+* Google Play Games Real-Time Multiplayer with achievements.
 * Bitmaps, Canvas.
 * Different Activities, Event Listeners.
 
