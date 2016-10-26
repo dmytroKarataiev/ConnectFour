@@ -28,6 +28,8 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 
+import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
 import karataiev.dmytro.connectfour.interfaces.OnGoogleApiChange;
 import karataiev.dmytro.connectfour.managers.MultiplayerManager;
 import karataiev.dmytro.connectfour.managers.RoomManager;
@@ -45,6 +47,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
         App.sContext = getApplicationContext();
     }
 
