@@ -1,4 +1,4 @@
-# Connect Four Game with Multiplayer
+# Connect Four Game with Multiplayer [![Travis CI](https://travis-ci.org/dmytroKarataiev/ConnectFour.svg?branch=master)](https://travis-ci.org/dmytroKarataiev/ConnectFour)
 <a href="https://play.google.com/store/apps/details?id=karataiev.dmytro.connectfour"><img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/apps/en-play-badge.png" width="185" height="60"/></a><br>
 
 ![Screenshots](materials/connect_four_screenshots.png)
