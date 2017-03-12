@@ -38,6 +38,7 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.adkdevelopment.license.ui.LicenseActivity;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.multiplayer.Invitation;
@@ -159,9 +160,13 @@ public class MainActivity extends AppCompatActivity implements
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            startActivity(new Intent(this, SettingsActivity.class));
-            return true;
+        switch (id) {
+            case R.id.action_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
+                return true;
+            case R.id.action_license:
+                startActivity(new Intent(this, LicenseActivity.class));
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
